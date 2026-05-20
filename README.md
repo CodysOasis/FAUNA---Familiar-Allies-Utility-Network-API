@@ -34,6 +34,8 @@ Install a FAUNA content pack to actually add familiars. On its own, FAUNA won't 
 
 A FAUNA content pack is a standard SMAPI content pack. No C# required.
 
+I've included the pack I made for reference, feel free to use as you please! 
+
 ### Pack Structure
 
 ```
