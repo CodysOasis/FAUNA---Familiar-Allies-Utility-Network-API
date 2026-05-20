@@ -112,7 +112,7 @@ Defines one or more familiar species. Each entry is a `FamiliarData` object.
           {
             "Id": "YourName.YourMod_FamiliarName_Ability1",
             "AbilityClass": "ForageHarvest",
-            "Description": "i18n:FamiliarName_Ability1_Description",
+            "Description": "FamiliarName_Ability1_Description",
             "Proc": "OnNearby",
             "ProcTimer": 60.0,
             "Condition": "",
@@ -143,7 +143,7 @@ Defines one or more familiar species. Each entry is a `FamiliarData` object.
 | `AnimalSprite` | string | `""` | Path to sprite sheet PNG, relative to your mod folder. |
 | `AnimalPortrait` | string | `""` | Path to portrait sheet PNG. Optional — omit for no portrait. |
 | `AnimalDialogue` | string | `""` | Path to dialogue JSON file. Required if `Speaks` is `true`. |
-| `Speaks` | bool | `false` | If `true`, the familiar can be talked to and will show dialogue. |
+| `Speaks` | bool | `true` | If `true`, the familiar can be talked to and will show dialogue. |
 | `AlwaysAnimate` | bool | `false` | If `true`, the familiar animates even when idle. Use for flying familiars. |
 | `Diet` | DietType | `Omnivore` | One of: `Carnivore`, `Herbivore`, `Omnivore`. Controls what food the familiar accepts. |
 | `Needs` | NeedsData | *(see below)* | Daily stat decay rates. |
@@ -151,7 +151,7 @@ Defines one or more familiar species. Each entry is a `FamiliarData` object.
 | `HatedItems` | string[] | `[]` | Item IDs the familiar hates as gifts. |
 | `Assistance` | AssistanceData | *(see below)* | Ability configuration. |
 
-> **Not yet functional:** `HasHumanoid`, `HumanoidSprite`, `HumanoidPortrait`, `HumanoidDialogue` — humanoid form support is defined in the schema but not yet implemented. These fields can be included for forward compatibility but will have no effect. `DropsLoot` and `LootPool` are also reserved for a future update.
+> **Not yet functional:** `HasHumanoid`, `HumanoidSprite`, `HumanoidPortrait`, `HumanoidDialogue` — humanoid form support is defined in the schema but not yet implemented. These fields can be included for forward compatibility but will have no effect. `DropsLoot` and `LootPool` are also reserved for a future update. If `speaks` is set to false, I recommend turning attention decay to zero, as the only other way to raise attention is through giving gifts.
 
 ---
 
