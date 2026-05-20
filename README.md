@@ -339,7 +339,7 @@ Reference in `familiars.json` as `"i18n:MyFamiliar_Ability1_Description"`.
 
 ## Example Packs
 
-- **[Vael's Familiars](https://www.nexusmods.com/stardewvalley)** — the official FAUNA content pack, part of the Tales of the Aether Glade series. Adds 11 familiars across multiple species, gated behind friendship with Vael.
+- **[Vael's Familiars](https://www.nexusmods.com/games/stardewvalley/mods/46494)** — the official FAUNA content pack, part of the Tales of the Aether Glade series. Adds 11 familiars across multiple species, gated behind friendship with Vael.
 
 ---
 
