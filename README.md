@@ -180,7 +180,7 @@ Familiar mood is derived from the average of their current needs. Trust is a lon
 
 #### Gift Tastes
 
-Use standard Stardew Valley item IDs (e.g. `"(O)724"` for Fried Egg). See the [Stardew Valley Wiki](https://stardewvalleywiki.com/Modding:Item_queries) for item ID reference.
+Use Qualified Stardew Valley item IDs (e.g. `"(O)724"` for Fried Egg). See the [Stardew Valley Wiki](https://stardewvalleywiki.com/Modding:Item_queries) for item ID reference.
 
 FAUNA supports `LovedItems` and `HatedItems`. Any item not listed in either defaults to a **Neutral** response. Additional tiers may be added in a future update.
 
