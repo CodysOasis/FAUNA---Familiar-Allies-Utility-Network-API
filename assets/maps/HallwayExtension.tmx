@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="7" height="3" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="4">
+ <properties>
+  <property name="AmbientLight" value="95 95 95"/>
+  <property name="AmbientNightLight" value="150 150 30"/>
+  <property name="PassOutSafe" value="T"/>
+  <property name="ProduceArea" value="4 13 8 16"/>
+  <property name="ViewportFollowPlayer" value="T"/>
+  <property name="Warp" value="4 21 Farm 14 11"/>
+ </properties>
+ <tileset firstgid="1" name="FamiliarDenTilesheet" tilewidth="16" tileheight="16" tilecount="100" columns="10">
+  <image source="FamiliarDenTilesheet" width="160" height="160"/>
+ </tileset>
+ <layer id="2" name="Back" width="7" height="3">
+  <data encoding="csv">
+6,6,6,6,6,6,6,
+6,6,6,6,6,6,6,
+6,6,6,6,6,6,6
+</data>
+ </layer>
+ <layer id="6" name="Back1" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,27,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="Back2" width="7" height="3">
+  <data encoding="csv">
+11,0,0,0,0,13,27,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="9" name="Back"/>
+ <layer id="3" name="Paths" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Buildings" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,7,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="Front" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="Front2" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="AlwaysFront" width="7" height="3">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

@@ -1,0 +1,55 @@
+{
+    "UI.Interaction.Chat": "Chat",
+    "UI.Interaction.FollowMe": "Follow Me",
+    "UI.Interaction.StopFollowing": "Stop Following",
+    "UI.Interaction.NeverMind": "Never Mind",
+    "UI.Interaction.CheckBag": "Check Bag",
+
+    "UI.Inventory.Full": "Your pockets are full!",
+    "UI.Inventory.DepositHint": "Click an empty slot to deposit your held item.",
+
+    "UI.Log.NoFamiliars": "No familiars yet.",
+    "UI.Log.Back": "< Back",
+    "UI.Log.Unknown": "???",
+    "UI.Log.Trust": "Trust",
+    "UI.Log.LovedGifts": "Loved Gifts",
+    "UI.Log.UnrevealedGift": "?",
+    "UI.Log.Food": "Food",
+    "UI.Log.Attention": "Attention",
+    "UI.Log.Happiness": "Happiness",
+
+    "UI.Shop.NoFamiliars": "No familiars available.",
+    "UI.Shop.Locked": "[Locked]",
+    "UI.Shop.Buy": "Buy  {{price}}g",
+    "UI.Shop.LockedButton": "Locked",
+    "UI.Shop.Unknown": "???",
+    "UI.Shop.Confirm": "Confirm",
+    "UI.Shop.Cancel": "Cancel",
+    "UI.Shop.SilentSpirits": "The spirits are silent...",
+
+    "Dialogue.AlreadyFed": "{{name}} doesn't seem hungry right now.",
+    "Dialogue.Fed": "{{name}} happily eats the {{item}}!",
+    "Dialogue.AlreadyGifted": "{{name}} doesn't want any more gifts today.",
+    "Dialogue.AlreadyChatted": "{{name}} seems content. Maybe chat again tomorrow?",
+    "Dialogue.Gift.Loved": "{{name}} absolutely loves this! Their eyes light up!",
+    "Dialogue.Gift.Hated": "{{name}} turns away. They really don't like this...",
+    "Dialogue.Gift.Neutral": "{{name}} accepts the gift politely.",
+
+    "Dialogue.Chat.Trust0.Happy.0": "{{name}} sniffs your hand curiously.",
+    "Dialogue.Chat.Trust0.Sad.0": "{{name}} seems a little uncertain around you.",
+    "Dialogue.Chat.Trust2.Happy.0": "{{name}} presses against your leg warmly.",
+    "Dialogue.Chat.Trust2.Sad.0": "{{name}} looks up at you with tired eyes.",
+    "Dialogue.Chat.Trust4.Happy.0": "{{name}} chirps happily at your approach.",
+    "Dialogue.Chat.Trust4.Sad.0": "{{name}} nuzzles you, but something seems off.",
+    "Dialogue.Chat.Trust6.Happy.0": "{{name}} seems genuinely delighted to see you!",
+    "Dialogue.Chat.Trust6.Sad.0": "{{name}} rests their head against you quietly.",
+    "Dialogue.Chat.Trust8.Happy.0": "{{name}} practically glows with affection.",
+    "Dialogue.Chat.Trust8.Sad.0": "{{name}} leans on you. They trust you completely.",
+    "Dialogue.Chat.Trust10.Happy.0": "{{name}} radiates warmth and deep contentment.",
+    "Dialogue.Chat.Trust10.Sad.0": "{{name}} stays close. You're their anchor.",
+    "Dialogue.Chat.Default": "{{name}} regards you thoughtfully.",
+
+    "Ability.Heal": "+{{amount}} HP",
+    "Ability.Energy": "+{{amount}} Energy"
+
+}

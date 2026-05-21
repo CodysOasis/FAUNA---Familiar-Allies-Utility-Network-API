@@ -1,0 +1,10 @@
+{
+    "Name": "FAUNA",
+    "Author": "CodysOasis",
+    "Version": "0.1.1",
+    "Description": "A framework for adding custom Familiars to Stardew Valley.",
+    "UniqueID": "CodysOasis.FAUNA",
+    "EntryDll": "FAUNA.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:46494" ]
+}
