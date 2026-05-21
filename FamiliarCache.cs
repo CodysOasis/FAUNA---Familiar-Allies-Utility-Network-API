@@ -1,12 +1,10 @@
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace FAUNA
 {
-    /// <summary>
-    /// Caches frequently accessed data to avoid repeated disk reads.
-    /// All caches are populated on game launch and cleared on save unload.
-    /// </summary>
     public static class FamiliarCache
     {
         // ─────────────────────────────────────────────────────────
@@ -14,108 +12,109 @@ namespace FAUNA
         // ─────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Caches familiars.json content per content pack UniqueID.
-        /// Key: pack UniqueID, Value: list of FamiliarData
+        /// All registered familiars, keyed by FamiliarId.
+        /// Populated from Mods/CodysOasis.FAUNA/Familiars game asset.
         /// </summary>
-        public static Dictionary<string, List<FamiliarData>> FamiliarDataByPack { get; private set; } = new();
+        public static Dictionary<string, FamiliarData> Familiars { get; private set; } = new();
 
         /// <summary>
-        /// Maps FamiliarId → owning IContentPack for fast lookup.
+        /// Cached dialogue, keyed by DialogueAsset path.
+        /// Loaded on demand via GameContent.
         /// </summary>
-        public static Dictionary<string, IContentPack> PackByFamiliarId { get; private set; } = new();
-
-        /// <summary>
-        /// Caches dialogue JSON files.
-        /// Key: pack UniqueID + ":" + dialogue path, Value: dialogue dictionary
-        /// </summary>
-        public static Dictionary<string, Dictionary<string, string>> DialogueByPath { get; private set; } = new();
+        private static Dictionary<string, Dictionary<string, string>> DialogueCache { get; set; } = new();
 
         // ─────────────────────────────────────────────────────────
         // Populate
         // ─────────────────────────────────────────────────────────
 
-        /// <summary>
-        /// Builds all caches from loaded content packs.
-        /// Call after LoadContentPacks() completes.
-        /// </summary>
         public static void Build()
         {
             Clear();
 
-            foreach (var kvp in ModEntry.ContentPacks)
+            var asset = ModEntry.ModHelper.GameContent
+                .Load<Dictionary<string, FamiliarData>>("Mods/CodysOasis.FAUNA/Familiars");
+
+            foreach (var kvp in asset)
             {
-                string packId = kvp.Key;
-                IContentPack pack = kvp.Value;
+                string familiarId = kvp.Key;
+                FamiliarData data = kvp.Value;
 
-                // Cache familiars.json
-                var familiars = pack.ReadJsonFile<List<FamiliarData>>("familiars.json");
-                if (familiars == null) continue;
+                Familiars[familiarId] = data;
 
-                FamiliarDataByPack[packId] = familiars;
-
-                // Cache PackByFamiliarId for fast reverse lookup
-                foreach (var familiar in familiars)
+                // Load and cache sprite texture if asset path is set
+                if (!string.IsNullOrEmpty(data.SpriteAsset))
                 {
-                    if (!string.IsNullOrEmpty(familiar.FamiliarId))
-                        PackByFamiliarId[familiar.FamiliarId] = pack;
+                    try
+                    {
+                        ModEntry.FamiliarTextures[familiarId] =
+                            ModEntry.ModHelper.GameContent.Load<Texture2D>(data.SpriteAsset);
+                    }
+                    catch (Exception ex)
+                    {
+                        ModEntry.ModMonitor.Log(
+                            $"[FamiliarCache] Failed to load sprite for {familiarId}: {ex.Message}",
+                            LogLevel.Warn);
+                    }
                 }
+
+                ModEntry.ModMonitor.Log(
+                    $"[FamiliarCache] Registered: {familiarId} ({data.DisplayName})",
+                    LogLevel.Trace);
             }
 
+            // Sync to RegisteredFamiliars for anything that still references it
+            ModEntry.RegisteredFamiliars = new Dictionary<string, FamiliarData>(Familiars);
+
             ModEntry.ModMonitor.Log(
-                $"[FamiliarCache] Built cache: {PackByFamiliarId.Count} familiars, " +
-                $"{FamiliarDataByPack.Count} packs.",
+                $"[FamiliarCache] Built cache: {Familiars.Count} familiar(s).",
                 LogLevel.Debug);
         }
 
-        /// <summary>
-        /// Gets or caches a dialogue JSON file for a given pack and path.
-        /// </summary>
-        public static Dictionary<string, string>? GetDialogue(
-            IContentPack pack, string dialoguePath)
-        {
-            string cacheKey = $"{pack.Manifest.UniqueID}:{dialoguePath}";
+        // ─────────────────────────────────────────────────────────
+        // Dialogue
+        // ─────────────────────────────────────────────────────────
 
-            if (DialogueByPath.TryGetValue(cacheKey, out var cached))
+        /// <summary>
+        /// Gets dialogue for a familiar, loading from game asset if not cached.
+        /// </summary>
+        public static Dictionary<string, string>? GetDialogue(string familiarId)
+        {
+            if (!Familiars.TryGetValue(familiarId, out var data))
+                return null;
+
+            if (string.IsNullOrEmpty(data.DialogueAsset))
+                return null;
+
+            if (DialogueCache.TryGetValue(data.DialogueAsset, out var cached))
                 return cached;
 
             try
             {
-                var dialogue = pack.ReadJsonFile<Dictionary<string, string>>(dialoguePath);
-                if (dialogue != null)
-                    DialogueByPath[cacheKey] = dialogue;
+                var dialogue = ModEntry.ModHelper.GameContent
+                    .Load<Dictionary<string, string>>(data.DialogueAsset);
+                DialogueCache[data.DialogueAsset] = dialogue;
                 return dialogue;
             }
             catch
             {
+                ModEntry.ModMonitor.Log(
+                    $"[FamiliarCache] Failed to load dialogue for {familiarId} at {data.DialogueAsset}",
+                    LogLevel.Warn);
                 return null;
             }
-        }
-
-        /// <summary>
-        /// Gets the content pack that owns a given familiar ID.
-        /// </summary>
-        public static IContentPack? GetPackForFamiliar(string familiarId)
-        {
-            PackByFamiliarId.TryGetValue(familiarId, out var pack);
-            return pack;
         }
 
         // ─────────────────────────────────────────────────────────
         // Clear
         // ─────────────────────────────────────────────────────────
 
-        /// <summary>
-        /// Clears all caches. Call on save unload or content invalidation.
-        /// </summary>
         public static void Clear()
         {
-            FamiliarDataByPack.Clear();
-            PackByFamiliarId.Clear();
-            DialogueByPath.Clear();
+            Familiars.Clear();
+            DialogueCache.Clear();
+            ModEntry.FamiliarTextures.Clear();
 
-            ModEntry.ModMonitor.Log(
-                "[FamiliarCache] Cache cleared.",
-                LogLevel.Debug);
+            ModEntry.ModMonitor.Log("[FamiliarCache] Cache cleared.", LogLevel.Debug);
         }
     }
 }

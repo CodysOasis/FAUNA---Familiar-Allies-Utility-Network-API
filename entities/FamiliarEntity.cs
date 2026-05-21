@@ -12,8 +12,7 @@ namespace FAUNA
 {
     public partial class FamiliarEntity : NPC
     {
-        private int _debugTick = 0;
-        
+
         // ─────────────────────────────────────────────────────────
         // Identity
         // ─────────────────────────────────────────────────────────
@@ -40,11 +39,6 @@ namespace FAUNA
         // ─────────────────────────────────────────────────────────
         // Movement / AI fields
         // ─────────────────────────────────────────────────────────
-
-
-
-        private Vector2 _lastPosition;
-        // Following distances (in pixels)
 
 
         // Idle chatter
@@ -91,69 +85,57 @@ namespace FAUNA
         /// spritePath is a temporary placeholder path — the real texture is loaded
         /// from the content pack and assigned immediately after construction.
         /// </summary>
-        public FamiliarEntity(FamiliarData data, FamiliarInstance instance, Vector2 position, GameLocation location, string spritePath, IModContentHelper modContent)
-            : base(
-                sprite: new AnimatedSprite(spritePath, 0, 32, 32),
-                position: position,
-                facingDir: 2,
-                name: data.FamiliarId.Replace(".", "_")
-            )
+        public FamiliarEntity(string familiarId, FamiliarData data, FamiliarInstance instance, Vector2 position, GameLocation location)
+    : base(
+        sprite: new AnimatedSprite(data.SpriteAsset, 0, 32, 32),
+        position: position,
+        facingDir: 2,
+        name: familiarId.Replace(".", "_")
+    )
+{
+    FamiliarId = familiarId;
+    InstanceId = instance.InstanceId;
+    displayName = instance.GetDisplayName(data);
+    drawOffset = new Vector2(-32f, 0f);
+    HideShadow = true;
+    willDestroyObjectsUnderfoot = false;
+    farmerPassesThrough = true;
+    SimpleNonVillagerNPC = true;
+    ignoreScheduleToday = true;
+    returningToEndPoint = false;
+    lastCrossroad = Microsoft.Xna.Framework.Rectangle.Empty;
+
+    // Load sprite via GameContent
+    try
+    {
+        Sprite.spriteTexture = ModEntry.ModHelper.GameContent.Load<Texture2D>(data.SpriteAsset);
+        _animalTexture = Sprite.spriteTexture;
+    }
+    catch
+    {
+        ModEntry.ModMonitor.Log($"Could not load sprite for {familiarId}", LogLevel.Warn);
+    }
+
+    Sprite.sourceRect = new Microsoft.Xna.Framework.Rectangle(0, 0, 32, 32);
+    Sprite.SpriteWidth = 32;
+    Sprite.SpriteHeight = 32;
+
+    // Load humanoid texture if applicable
+    if (data.HasHumanoid && !string.IsNullOrEmpty(data.HumanoidSpriteAsset))
+    {
+        try
         {
-            FamiliarId = data.FamiliarId;
-            InstanceId = instance.InstanceId;
-            displayName = instance.GetDisplayName(data);
-            drawOffset = new Vector2(-32f, 0f);
-            HideShadow = true;
-            
+            _humanoidTexture = ModEntry.ModHelper.GameContent.Load<Texture2D>(data.HumanoidSpriteAsset);
+        }
+        catch
+        {
+            ModEntry.ModMonitor.Log($"Could not load humanoid texture for {familiarId}", LogLevel.Warn);
+        }
+    }
 
-            // Prevent familiar from destroying crops/objects underfoot
-            willDestroyObjectsUnderfoot = false;
-
-            // Let the player walk through them if they're in the way
-            farmerPassesThrough = true;
-
-            // Mark as a simple non-villager so the game doesn't treat it like an NPC
-            SimpleNonVillagerNPC = true;
-
-            // Suppress schedule system from the start
-            ignoreScheduleToday = true;
-            returningToEndPoint = false;
-            lastCrossroad = Microsoft.Xna.Framework.Rectangle.Empty;
-
-
-
-            // Load the real texture from the content pack and assign it directly,
-            // since AnimatedSprite doesn't accept Texture2D in its constructor
-            Sprite.spriteTexture = modContent.Load<Texture2D>(data.AnimalSprite);
-            _animalTexture = Sprite.spriteTexture;
-
-            Sprite.spriteTexture = modContent.Load<Texture2D>(data.AnimalSprite);
-            _animalTexture = Sprite.spriteTexture;
-            Sprite.sourceRect = new Microsoft.Xna.Framework.Rectangle(0, 0, 32, 32);
-            Sprite.SpriteWidth = 32;
-            Sprite.SpriteHeight = 32;
-
-            // Load humanoid texture if applicable
-            if (data.HasHumanoid && !string.IsNullOrEmpty(data.HumanoidSprite))
-            {
-                try
-                {
-                    _humanoidTexture = modContent.Load<Texture2D>(data.HumanoidSprite);
-                }
-                catch
-                {
-                    ModEntry.ModMonitor.Log(
-                        $"Could not load humanoid texture for {data.FamiliarId}",
-                        LogLevel.Warn);
-                }
-            }
-
-            
-
-            // Get Ability Data
-            if (ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var abilityData))
-                _abilityHandler = new FamiliarAbilityHandler(this, instance, abilityData);
-            }
+    if (ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var abilityData))
+        _abilityHandler = new FamiliarAbilityHandler(this, instance, abilityData);
+}
             
         
 
@@ -470,20 +452,17 @@ private void ShowDialogue(FamiliarInstance instance, FamiliarData data,
 // Tries to find a dialogue line in the content pack's i18n
 private string? GetDialogueLine(FamiliarInstance instance, string baseKey)
 {
-    IContentPack? pack = FamiliarCache.GetPackForFamiliar(FamiliarId);
-    if (pack == null) return null;
-
     if (!ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var familiarData))
         return null;
 
-    // Pick dialogue file based on current form
-    string dialoguePath = instance.CurrentForm == FamiliarForm.Animal
-        ? familiarData.AnimalDialogue
-        : familiarData.HumanoidDialogue;
+    // Pick dialogue asset based on current form
+    string dialogueAsset = instance.CurrentForm == FamiliarForm.Animal
+        ? familiarData.DialogueAsset
+        : familiarData.HumanoidDialogueAsset;
 
-    if (string.IsNullOrEmpty(dialoguePath)) return null;
+    if (string.IsNullOrEmpty(dialogueAsset)) return null;
 
-    var dialogueDict = FamiliarCache.GetDialogue(pack, dialoguePath);
+    var dialogueDict = FamiliarCache.GetDialogue(FamiliarId);
     if (dialogueDict == null) return null;
 
     string[] keysToTry =
@@ -501,7 +480,7 @@ private string? GetDialogueLine(FamiliarInstance instance, string baseKey)
         {
             if (!dialogueDict.TryGetValue($"{key}_{index}", out string? line))
                 break;
-            lines.Add(ResolveTokens(line, pack));
+            lines.Add(line); // no token resolution needed — CP already handled it
             index++;
         }
 
@@ -512,20 +491,6 @@ private string? GetDialogueLine(FamiliarInstance instance, string baseKey)
     return null;
 }
 
-private string ResolveTokens(string line, IContentPack pack)
-{
-    return System.Text.RegularExpressions.Regex.Replace(
-        line,
-        @"\{\{i18n:([^}]+)\}\}",
-        match =>
-        {
-            string key = match.Groups[1].Value;
-            var translation = pack.Translation.Get(key);
-            return translation.HasValue() 
-                ? translation.ToString() 
-                : match.Value; // leave unreplaced if key not found
-        });
-}
 
 // Fallback chat dialogue based on trust tier and mood
 private string GetFallbackChatDialogue(FamiliarInstance instance, FamiliarData data)
@@ -595,19 +560,23 @@ private string GetFallbackChatDialogue(FamiliarInstance instance, FamiliarData d
 
         private void UpdateSprite(FamiliarData data)
         {
-            string spritePath = CurrentForm == FamiliarForm.Animal
-                ? data.AnimalSprite
-                : data.HumanoidSprite;
+            string spriteAsset = CurrentForm == FamiliarForm.Animal
+                ? data.SpriteAsset
+                : data.HumanoidSpriteAsset;
 
             int spriteWidth = CurrentForm == FamiliarForm.Animal ? 32 : 16;
-            int spriteHeight = 32;
 
-            Sprite = new AnimatedSprite(
-                "Characters\\" + spritePath,
-                0,
-                spriteWidth,
-                spriteHeight
-            );
+            try
+            {
+                var texture = ModEntry.ModHelper.GameContent.Load<Texture2D>(spriteAsset);
+                Sprite.spriteTexture = texture;
+                Sprite.SpriteWidth = spriteWidth;
+                Sprite.SpriteHeight = 32;
+            }
+            catch
+            {
+                ModEntry.ModMonitor.Log($"Could not load sprite {spriteAsset} for {FamiliarId}", LogLevel.Warn);
+            }
         }
 
         public override Microsoft.Xna.Framework.Rectangle GetBoundingBox()
@@ -710,54 +679,32 @@ if (currentLocation != null)
 
         // Gets a random unsaid line for a given key prefix (e.g. "Idle", "IdleResponse")
         private string? GetUnsaidDialogueLine(FamiliarInstance instance, string keyPrefix)
-        {
-            if (!ModEntry.RegisteredFamiliars.TryGetValue(
-                instance.FamiliarId, out var data))
-            {
+{
+    if (!ModEntry.RegisteredFamiliars.TryGetValue(instance.FamiliarId, out var data))
+        return null;
 
-                return null;
-            }
+    string dialogueAsset = instance.CurrentForm == FamiliarForm.Animal
+        ? data.DialogueAsset
+        : data.HumanoidDialogueAsset;
 
-            string dialoguePath = instance.CurrentForm == FamiliarForm.Animal
-                ? data.AnimalDialogue
-                : data.HumanoidDialogue;
+    if (string.IsNullOrEmpty(dialogueAsset)) return null;
 
+    var dialogueDict = FamiliarCache.GetDialogue(instance.FamiliarId);
+    if (dialogueDict == null) return null;
 
+    var available = new List<string>();
+    int index = 0;
+    while (true)
+    {
+        string key = $"{keyPrefix}_{index}";
+        if (!dialogueDict.TryGetValue(key, out string? line)) break;
+        if (!instance.SaidTodayLines.Contains(key))
+            available.Add(line); // CP already resolved tokens
+        index++;
+    }
 
-            if (string.IsNullOrEmpty(dialoguePath)) return null;
-
-            IContentPack? pack = FamiliarCache.GetPackForFamiliar(instance.FamiliarId);
-            if (pack == null) return null;
-
-
-            if (pack == null) return null;
-
-            Dictionary<string, string>? dialogueDict;
-            try
-            {
-                dialogueDict = FamiliarCache.GetDialogue(pack, dialoguePath);
-            }
-            catch (Exception ex)
-            {
-                ModEntry.ModMonitor.Log($"[ChatterDebug] dict load failed: {ex.Message}", LogLevel.Debug);
-                return null;
-            }
-
-            if (dialogueDict == null) return null;
-
-            var available = new List<string>();
-            int index = 0;
-            while (true)
-            {
-                string key = $"{keyPrefix}_{index}";
-                if (!dialogueDict.TryGetValue(key, out string? line)) break;
-                if (!instance.SaidTodayLines.Contains(key))
-                    available.Add(ResolveTokens(line, pack));
-                index++;
-            }
-
-            return available.Count > 0 ? available[Game1.random.Next(available.Count)] : null;
-        }
+    return available.Count > 0 ? available[Game1.random.Next(available.Count)] : null;
+}
 
         private void UpdateHittingTarget(GameTime time, GameLocation location)
         {

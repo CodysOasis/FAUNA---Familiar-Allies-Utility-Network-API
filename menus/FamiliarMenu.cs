@@ -311,17 +311,9 @@ if (data.Assistance?.Abilities != null &&
     var firstAbility = data.Assistance.Abilities[0][0];
 
     string abilityName = firstAbility.AbilityClass;
-    string abilityDesc = "???";
-
-    var pack = FamiliarCache.GetPackForFamiliar(instance.FamiliarId);
-
-    if (pack != null && !string.IsNullOrEmpty(firstAbility.Description))
-    {
-        var translation = pack.Translation.Get(firstAbility.Description);
-        if (translation.HasValue())
-            abilityDesc = translation.ToString();
-    }
-
+    string abilityDesc = string.IsNullOrEmpty(firstAbility.Description)
+        ? "???" : firstAbility.Description;
+        
     Utility.drawTextWithShadow(b,
         abilityName,
         Game1.smallFont,

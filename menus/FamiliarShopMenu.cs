@@ -287,9 +287,7 @@ namespace FAUNA
                 var entry = _stock[dataIndex];
 
                 // Temporary case-insensitive fallback to test if casing is the issue
-                var data = ModEntry.RegisteredFamiliars.Values
-                    .FirstOrDefault(f => f.FamiliarId.Equals(
-                        entry.FamiliarId, StringComparison.OrdinalIgnoreCase));
+                ModEntry.RegisteredFamiliars.TryGetValue(entry.FamiliarId, out var data);
 
                 if (data == null)
                     continue;
@@ -400,13 +398,8 @@ namespace FAUNA
                 var firstAbility = data.Assistance.Abilities[0][0];
                 abilityName = firstAbility.AbilityClass;
 
-                var pack = FamiliarCache.GetPackForFamiliar(entry.FamiliarId);
-                if (pack != null && !string.IsNullOrEmpty(firstAbility.Description))
-                {
-                    var translation = pack.Translation.Get(firstAbility.Description);
-                    if (translation.HasValue())
-                        abilityDesc = translation.ToString();
-                }
+                if (!string.IsNullOrEmpty(firstAbility.Description))
+                    abilityDesc = firstAbility.Description;
             }
 
             // Fallback 1: familiar's own description

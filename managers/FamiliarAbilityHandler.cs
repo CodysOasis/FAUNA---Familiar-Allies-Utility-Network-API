@@ -348,9 +348,7 @@ namespace FAUNA
             {
                 try
                 {
-                    var pack = GetContentPack();
-                    if (pack != null)
-                        icon = pack.ModContent.Load<Texture2D>(_data.Assistance.BuffIcon);
+                    icon = ModEntry.ModHelper.GameContent.Load<Texture2D>(_data.Assistance.BuffIcon);
                 }
                 catch { }
             }
@@ -954,9 +952,5 @@ private int GetInventorySize()
 {
     return _data.Assistance?.InventorySize ?? 0;
 }
-    private IContentPack? GetContentPack()
-    {
-        return FamiliarCache.GetPackForFamiliar(_instance.FamiliarId);
-    }
     }
 }

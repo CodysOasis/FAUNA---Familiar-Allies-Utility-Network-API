@@ -28,6 +28,23 @@ namespace FAUNA
 
         private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         {
+            // Seed empty familiars asset
+            if (e.NameWithoutLocale.IsEquivalentTo("Mods/CodysOasis.FAUNA/Familiars"))
+            {
+                e.LoadFrom(
+                    () => new Dictionary<string, FamiliarData>(StringComparer.OrdinalIgnoreCase),
+                    AssetLoadPriority.Low);
+                return;
+            }
+
+            // Seed empty shops asset
+            if (e.NameWithoutLocale.IsEquivalentTo("Mods/CodysOasis.FAUNA/Shops"))
+            {
+                e.LoadFrom(
+                    () => new Dictionary<string, FamiliarShopData>(StringComparer.OrdinalIgnoreCase),
+                    AssetLoadPriority.Low);
+                return;
+            }
             // Tilesheet
             if (e.NameWithoutLocale.IsEquivalentTo("Maps/FamiliarDenTilesheet"))
             {
@@ -66,9 +83,9 @@ namespace FAUNA
             if (e.NameWithoutLocale.IsEquivalentTo("Maps/FAUNA.FamiliarDen"))
             {
                 e.LoadFrom(() => DenMapBuilder.BuildMap(
-                Helper, RegisteredFamiliars, ContentPacks,
-                FamiliarManager?.OwnedFamiliars.Count ?? 0),
-                AssetLoadPriority.Exclusive);
+                    Helper, RegisteredFamiliars,
+                    FamiliarManager?.OwnedFamiliars.Count ?? 0),
+                    AssetLoadPriority.Exclusive);
             }
             // OuijaBoard 
             if (e.NameWithoutLocale.IsEquivalentTo("assets/BigCraftables/ouija_board"))
@@ -122,6 +139,17 @@ namespace FAUNA
                 });
             }
         }
+
+        private void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e)
+        {
+            if (e.NamesWithoutLocale.Any(n =>
+                n.IsEquivalentTo("Mods/CodysOasis.FAUNA/Familiars") ||
+                n.IsEquivalentTo("Mods/CodysOasis.FAUNA/Shops")))
+            {
+                FamiliarCache.Build();
+                Monitor.Log("[FAUNA] Assets invalidated — rebuilt familiar cache.", LogLevel.Debug);
+            }
+        }
        public override void Entry(IModHelper helper)
         {
             ModHelper = helper;
@@ -142,6 +170,7 @@ namespace FAUNA
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Content.AssetRequested += OnAssetRequested;
+            helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Player.Warped += OnWarped;
             helper.ConsoleCommands.Add("ff_reset", "Resets all familiar save data.", (cmd, args) =>
@@ -151,16 +180,18 @@ namespace FAUNA
         });
         
         }
-                public override object? GetApi()
+        public override object? GetApi()
         {
             return new FaunaApi(FamiliarManager!);
         }
+
+        
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
+            // Defer asset load one tick so CP packs have registered their patches
+            Helper.Events.GameLoop.UpdateTicking += OnFirstTick;
             Translation = Helper.Translation;
             HarmonyPatches.Apply(ModManifest.UniqueID);
-            LoadContentPacks();
-            FamiliarCache.Build();
             RegisterDefaultShop();
             SetupGMCM();
 
@@ -191,20 +222,13 @@ namespace FAUNA
         }
         private void RegisterDefaultShop()
         {
-            var stock = ModEntry.RegisteredFamiliars.Values
-                .Where(f => !f.ExcludeFromDefaultShop)
-                .Select(f => new FamiliarShopEntry
-                {
-                    FamiliarId = f.FamiliarId,
-                    Price = f.DefaultShopPrice > 0 ? f.DefaultShopPrice : 2000
-                })
-                .ToList();
-
+            // Default shop stock is built dynamically from the game asset
+            // so it always reflects whatever CP packs have registered
             FamiliarShopRegistry.RegisterShop(new FamiliarShopData
             {
-                ShopId      = "ouija_default",
+                ShopId = "ouija_default",
                 DisplayName = "Spirit Familiar Summoning",
-                Stock       = stock
+                Stock = new List<FamiliarShopEntry>() // populated at shop-open time
             });
         }
         private void SetupGMCM()
@@ -243,6 +267,13 @@ namespace FAUNA
             Helper.GameContent.InvalidateCache("Maps/FAUNA.FamiliarDen");
             _pendingSpawn = true;
             
+        }
+        private void OnFirstTick(object? sender, UpdateTickingEventArgs e)
+        {
+            Helper.Events.GameLoop.UpdateTicking -= OnFirstTick;
+            FamiliarCache.Build();
+            RegisterDefaultShop();
+            Monitor.Log($"FAUNA loaded {RegisteredFamiliars.Count} familiar(s) total.", LogLevel.Info);
         }
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
@@ -314,57 +345,6 @@ namespace FAUNA
             
         }
 
-        private void LoadContentPacks()
-        {
-            foreach (var contentPack in Helper.ContentPacks.GetOwned())
-            {
-                Monitor.Log($"Loading familiars from content pack: {contentPack.Manifest.Name}", LogLevel.Trace);
-
-                var data = contentPack.ReadJsonFile<List<FamiliarData>>("familiars.json");
-
-                if (data == null)
-                {
-                    Monitor.Log($"  No familiars.json found in {contentPack.Manifest.Name}, skipping.", LogLevel.Warn);
-                    continue;
-                }
-                ContentPacks[contentPack.Manifest.UniqueID] = contentPack;
-                foreach (var familiar in data)
-                {
-                    if (string.IsNullOrEmpty(familiar.FamiliarId))
-                    {
-                        Monitor.Log($"  Skipping a familiar with no FamiliarId in {contentPack.Manifest.Name}.", LogLevel.Warn);
-                        continue;
-                    }
-
-                    RegisteredFamiliars[familiar.FamiliarId] = familiar;
-                    Monitor.Log($"  Registered familiar: {familiar.FamiliarId} ({familiar.DisplayName})", LogLevel.Trace);
-
-                    // Load and cache the sprite texture
-                    try
-                    {
-                        FamiliarTextures[familiar.FamiliarId] = contentPack.ModContent.Load<Texture2D>(familiar.AnimalSprite);
-                    }
-                    catch (Exception e)
-                    {
-                        Monitor.Log($"  Failed to load texture for {familiar.FamiliarId}: {e.Message}", LogLevel.Warn);
-                    }
-                }
-                var shops = contentPack.ReadJsonFile<List<FamiliarShopData>>("shops.json");
-                if (shops != null)
-                {
-                    foreach (var shop in shops)
-                    {
-                        if (string.IsNullOrEmpty(shop.ShopId)) continue;
-                        FamiliarShopRegistry.RegisterShop(shop);
-                         Monitor.Log($"Registered shop: {shop.ShopId}", LogLevel.Debug);
-
-                    }
-                }
-                
-        
-            }
-            Monitor.Log($"FAUNA loaded {RegisteredFamiliars.Count} familiar(s) total.", LogLevel.Info);
-        }
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)

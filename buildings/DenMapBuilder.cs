@@ -22,118 +22,81 @@ namespace FAUNA
         private const int ColumnWidth       = 7;   // tiles per extension column
         private const int BaseFamiliarSlots = 3;   // rooms in the base map
 
-public static Map BuildMap(
-    IModHelper helper,
-    Dictionary<string, FamiliarData> registeredFamiliars,
-    Dictionary<string, IContentPack> contentPacks,
-    int ownedCount)
-{
-    Map map = helper.ModContent.Load<Map>("assets/maps/FamiliarDen.tmx");
-
-    // Get all owned instances in order
-    var ownedFamiliars = ModEntry.FamiliarManager!.OwnedFamiliars;
-
-    int extraColumns = System.Math.Max(0, ownedCount - BaseFamiliarSlots);
-
-
-    // Base slot X offsets in tiles (left edge of each room)
-    int[] baseRoomX = { 1, 8, 15 };
-
-    // ── Pass 1: overlay custom rooms for base slots (0-2) ──────
-    for (int i = 0; i < System.Math.Min(ownedCount, BaseFamiliarSlots); i++)
-    {
-        if (i >= ownedFamiliars.Count) break;
-        var instance = ownedFamiliars[i];
-
-        string lastSegment   = instance.FamiliarId.Split('_').Last();
-        string roomFileName  = $"{lastSegment}_room.tmx";
-        string roomAssetPath = $"assets/maps/rooms/{roomFileName}";
-
-        IContentPack? owningPack = null;
-        foreach (var kvp in contentPacks)
+        public static Map BuildMap(
+            IModHelper helper,
+            Dictionary<string, FamiliarData> registeredFamiliars,
+            int ownedCount)
         {
-            owningPack = FamiliarCache.GetPackForFamiliar(instance.FamiliarId);
-            if (owningPack != null) break;
-        }
+            Map map = helper.ModContent.Load<Map>("assets/maps/FamiliarDen.tmx");
+            var ownedFamiliars = ModEntry.FamiliarManager!.OwnedFamiliars;
+            int extraColumns = System.Math.Max(0, ownedCount - BaseFamiliarSlots);
+            int[] baseRoomX = { 1, 8, 15 };
 
-        if (owningPack == null) continue;
-
-        try
-        {
-            var customRoom = owningPack.ModContent.Load<Map>(roomAssetPath);
-            // Overlay onto base map at the correct X position, rows 0-9
-            CopyChunk(customRoom, map, baseRoomX[i], RoomRowStart);
-        }
-        catch
-        {
-            // No custom room — keep base map tiles
-
-        }
-    }
-
-    // ── Load extension chunks ───────────────────────────────────
-    Map roomDefault  = helper.ModContent.Load<Map>("assets/maps/DefaultRoom.tmx");
-    Map hallwayChunk = helper.ModContent.Load<Map>("assets/maps/HallwayExtension.tmx");
-    Map hubChunk     = helper.ModContent.Load<Map>("assets/maps/HubExtension.tmx");
-    Map rightCap     = helper.ModContent.Load<Map>("assets/maps/RightCap.tmx");
-
-    if (extraColumns == 0)
-    {
-        int newBaseWidth = BaseMapWidth + 1;
-        foreach (var layer in map.Layers)
-            ResizeLayer(map, layer, newBaseWidth, MapHeight);
-        CopyChunk(rightCap, map, BaseMapWidth, 0);
-        return map;
-    }
-
-    // ── Pass 2: extension columns ───────────────────────────────
-    int newWidth = BaseMapWidth + extraColumns * ColumnWidth + 1;
-    foreach (var layer in map.Layers)
-        ResizeLayer(map, layer, newWidth, MapHeight);
-
-    var extraOwned = ownedFamiliars.Skip(BaseFamiliarSlots).ToList();
-
-    for (int col = 0; col < extraColumns; col++)
-    {
-        int tileOffsetX = BaseMapWidth + col * ColumnWidth;
-        var instance    = extraOwned[col];
-
-        string lastSegment   = instance.FamiliarId.Split('_').Last();
-        string roomFileName  = $"{lastSegment}_room.tmx";
-        string roomAssetPath = $"assets/maps/rooms/{roomFileName}";
-
-        Map roomToUse = roomDefault;
-
-        IContentPack? owningPack = null;
-        foreach (var kvp in contentPacks)
-        {
-            owningPack = FamiliarCache.GetPackForFamiliar(instance.FamiliarId);
-            if (owningPack != null) break;
-        }
-
-        if (owningPack != null)
-        {
-            try
+            // ── Pass 1: base slots ──────────────────────────────────────
+            for (int i = 0; i < System.Math.Min(ownedCount, BaseFamiliarSlots); i++)
             {
-                roomToUse = owningPack.ModContent.Load<Map>(roomAssetPath);
+                if (i >= ownedFamiliars.Count) break;
+                var instance = ownedFamiliars[i];
+
+                if (!registeredFamiliars.TryGetValue(instance.FamiliarId, out var data)) continue;
+                if (string.IsNullOrEmpty(data.RoomAsset)) continue;
+
+                try
+                {
+                    var customRoom = helper.GameContent.Load<Map>(data.RoomAsset);
+                    CopyChunk(customRoom, map, baseRoomX[i], RoomRowStart);
+                }
+                catch { }
             }
-            catch
+
+            // ── Load extension chunks ───────────────────────────────────
+            Map roomDefault  = helper.ModContent.Load<Map>("assets/maps/DefaultRoom.tmx");
+            Map hallwayChunk = helper.ModContent.Load<Map>("assets/maps/HallwayExtension.tmx");
+            Map hubChunk     = helper.ModContent.Load<Map>("assets/maps/HubExtension.tmx");
+            Map rightCap     = helper.ModContent.Load<Map>("assets/maps/RightCap.tmx");
+
+            if (extraColumns == 0)
             {
-
+                int newBaseWidth = BaseMapWidth + 1;
+                foreach (var layer in map.Layers)
+                    ResizeLayer(map, layer, newBaseWidth, MapHeight);
+                CopyChunk(rightCap, map, BaseMapWidth, 0);
+                return map;
             }
+
+            // ── Pass 2: extension columns ───────────────────────────────
+            int newWidth = BaseMapWidth + extraColumns * ColumnWidth + 1;
+            foreach (var layer in map.Layers)
+                ResizeLayer(map, layer, newWidth, MapHeight);
+
+            var extraOwned = ownedFamiliars.Skip(BaseFamiliarSlots).ToList();
+
+            for (int col = 0; col < extraColumns; col++)
+            {
+                int tileOffsetX = BaseMapWidth + col * ColumnWidth;
+                var instance = extraOwned[col];
+
+                Map roomToUse = roomDefault;
+
+                if (registeredFamiliars.TryGetValue(instance.FamiliarId, out var data)
+                    && !string.IsNullOrEmpty(data.RoomAsset))
+                {
+                    try
+                    {
+                        roomToUse = helper.GameContent.Load<Map>(data.RoomAsset);
+                    }
+                    catch { }
+                }
+
+                CopyChunk(roomToUse,    map, tileOffsetX, RoomRowStart);
+                CopyChunk(hallwayChunk, map, tileOffsetX, HallwayRowStart);
+                CopyChunk(hubChunk,     map, tileOffsetX, HubRowStart);
+            }
+
+            int capOffsetX = BaseMapWidth + extraColumns * ColumnWidth;
+            CopyChunk(rightCap, map, capOffsetX, 0);
+            return map;
         }
-
-        CopyChunk(roomToUse,    map, tileOffsetX, RoomRowStart);
-        CopyChunk(hallwayChunk, map, tileOffsetX, HallwayRowStart);
-        CopyChunk(hubChunk,     map, tileOffsetX, HubRowStart);
-    }
-
-    // Cap last
-    int capOffsetX = BaseMapWidth + extraColumns * ColumnWidth;
-    CopyChunk(rightCap, map, capOffsetX, 0);
-
-    return map;
-}
         // ─────────────────────────────────────────────────────────
         // Resize a layer to a new width by rebuilding its tile array
         // ─────────────────────────────────────────────────────────

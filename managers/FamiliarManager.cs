@@ -26,23 +26,6 @@ namespace FAUNA
             _monitor = monitor;
         }
 
-        // Replace the pack ID lookup with this helper in FamiliarManager:
-        private IContentPack? GetContentPackForFamiliar(string familiarId)
-        {
-            return FamiliarCache.GetPackForFamiliar(familiarId);
-        }
-
-        // Finds the sprite path for a familiar by looking up which content pack owns it
-        private string? GetSpritePath(string familiarId)
-        {
-            var pack = FamiliarCache.GetPackForFamiliar(familiarId);
-            if (pack == null) return null;
-
-            if (!ModEntry.RegisteredFamiliars.TryGetValue(familiarId, out var data))
-                return null;
-
-            return pack.ModContent.GetInternalAssetName(data.AnimalSprite).Name;
-        }
 
         //Diet checker to see what items are valid Food
         public static bool IsAcceptableFood(Item item, DietType diet)
@@ -80,11 +63,6 @@ namespace FAUNA
             };
         }
 
-        // Finds the IModContentHelper for the content pack that owns a familiar
-        private IModContentHelper? GetModContent(string familiarId)
-        {
-            return FamiliarCache.GetPackForFamiliar(familiarId)?.ModContent;
-        }
         // Call this when a save is loaded
 public void Load()
 {
@@ -248,19 +226,11 @@ public void ApplyDailyDecay()
 
         Vector2 spawnPosition = new Vector2(spawnTileX * 64f, roomY * 64f);
 
-        string? spritePath  = GetSpritePath(instance.FamiliarId);
-        IModContentHelper? modContent = GetModContent(instance.FamiliarId);
 
-
-        if (spritePath == null || modContent == null)
-        {
-            _monitor.Log($"Could not find content pack for familiar: {instance.FamiliarId}", LogLevel.Warn);
-            continue;
-        }
 FamiliarEntity entity;
 try
 {
-    entity = new FamiliarEntity(data, instance, spawnPosition, interior, spritePath, modContent);
+    entity = new FamiliarEntity(instance.FamiliarId, data, instance, spawnPosition, interior);
 }
 catch (Exception ex)
 {
@@ -268,12 +238,11 @@ catch (Exception ex)
     continue;
 }  
         // Load portrait if defined
-        var pack = FamiliarCache.GetPackForFamiliar(instance.FamiliarId);
-        if (pack != null && !string.IsNullOrEmpty(data.AnimalPortrait))
+        if (!string.IsNullOrEmpty(data.PortraitAsset))
         {
             try
             {
-                entity.Portrait = pack.ModContent.Load<Texture2D>(data.AnimalPortrait);
+                entity.Portrait = ModEntry.ModHelper.GameContent.Load<Texture2D>(data.PortraitAsset);
             }
             catch
             {
