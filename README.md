@@ -305,7 +305,7 @@ Adds a custom familiar shop. If omitted, your familiars are only sold through th
 
 **Animal sprites** (`assets/sprites/`)
 - PNG, transparent background
-- Standard Stardew scale: **16×16 px** per frame
+- Standard Stardew scale: **32x32 px** per frame
 - Frames laid out horizontally per animation row
 - Row layout:
 
