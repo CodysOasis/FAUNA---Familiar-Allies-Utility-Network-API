@@ -1,0 +1,536 @@
+[
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_BlackCat",
+        "DisplayName": "Black Cat",
+        "Description": "A mysterious feline with an affinity for luck.",
+        "FamiliarType": "Social",
+	    "Diet": "Carnivore",
+
+        "AnimalSprite": "assets/sprites/black_cat.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/black_cat.png",
+        "AnimalDialogue": "assets/dialogue/black_cat.json",
+
+        "HasHumanoid": false,
+
+        "Needs": {
+            "FoodDecayPerDay": 0.2,
+            "AttentionDecayPerDay": 0.25
+        },
+
+        "Assistance": {
+            "BuffIcon": "assets/icons/black_cat_buff.png",
+            "Abilities": [
+                [
+                    {
+                        "Id": "LuckBuff_Base",
+                        "AbilityClass": "Buff",
+                        "Proc": "OnFollow",
+                        "Description": "BlackCat_LuckBuff_Description",
+                        "Args": { 
+                            "BuffId": "luck",
+                            "Magnitude": "1"
+                        }
+                    }
+                ],
+                [
+                    {
+                        "Id": "LuckBuff_Base",
+                        "AbilityClass": "Buff",
+                        "Proc": "OnFollow",
+                        "Description": "BlackCat_LuckBuff_Description",
+                        "Args": {
+                            "BuffId": "luck",
+                            "Magnitude": "1"
+                        }
+                    },
+                    {
+                        "Id": "SpeedBuff_Bonus",
+                        "AbilityClass": "Buff",
+                        "Proc": "OnFollow",
+                        "Description": "BlackCat_SpeedBuff_Description",
+                        "Args": {
+                            "BuffId": "speed",
+                            "Magnitude": "1"
+                        }
+                    }
+                ]
+            ]
+        },
+
+        // Black Cat — loves coffee and fish (nocturnal, refined tastes)
+        // hates anything corporate/cheap
+        "LovedItems": [
+            "(O)395",  // Coffee
+            "(O)769",  // Void Essence
+            "(O)143",  // Catfish
+            "(O)440"   // wool
+        ],
+        "HatedItems": [
+            "(O)167",  // Joja Cola 
+            "(O)168"   // Trash 
+        ],
+
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_Hound",
+        "DisplayName": "Hound",
+        "Description": "A loyal hound that wards off misfortune.",
+        "FamiliarType": "Combat",
+        "Diet": "Carnivore",
+        "AnimalSprite": "assets/sprites/hound.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/hound.png",
+        "AnimalDialogue": "assets/dialogue/hound.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.2,
+            "AttentionDecayPerDay": 0.25
+        },
+         "Assistance": {
+            "BuffIcon": "assets/icons/hound_buff.png",
+            "Abilities": [
+                [
+                   {
+                        "Id": "Melee_Base",
+                        "AbilityClass": "Melee",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 4,
+                        "ProcAnimation": true,
+                        "ProcSound": "daggerswipe",
+                        "Description": "Hound_Melee_Description",
+                        "Args": {
+                            "Range": "320",
+                            "Damage": "10",
+                            "Knockback": "5"
+                        }
+                    }
+                ],
+                [
+                    {
+                        "Id": "AttackBuff_Base",
+                        "AbilityClass": "Buff",
+                        "Proc": "OnFollow",
+                        "Description": "Hound_AttackBuff_Description",
+                        "Args": {
+                            "BuffId": "attack",
+                            "Magnitude": "1"
+                        }
+                    },
+                    {
+                        "Id": "Melee_Base",
+                        "AbilityClass": "Melee",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 8,
+                        "ProcAnimation": true,
+                        "ProcSound": "daggerswipe",
+                        "Description": "Hound_Melee_Description",
+                        "Args": {
+                            "Range": "320",
+                            "Damage": "8",
+                            "Knockback": "5"
+                        }
+                    }
+                ]
+            ]
+        },
+       
+        "LovedItems": ["(O)724", "(O)438"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_SpiritHound",
+        "DisplayName": "Spirit Hound",
+        "Description": "A loyal spectral hound that wards off misfortune.",
+        "FamiliarType": "Combat",
+        "Diet": "Carnivore",
+        "AnimalSprite": "assets/sprites/spirit_hound.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/spirit_hound.png",
+        "AnimalDialogue": "assets/dialogue/spirit_hound.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.25,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "BuffIcon": "assets/icons/hound_buff.png",
+            "Abilities": [
+                [
+                   {
+                        "Id": "Melee_Base",
+                        "AbilityClass": "Melee",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 4,
+                        "ProcAnimation": true,
+                        "ProcSound": "daggerswipe",
+                        "Description": "SpiritHound_Melee_Description",
+                        "Args": {
+                            "Range": "320",
+                            "Damage": "10",
+                            "Knockback": "5"
+                        }
+                    }
+                ],
+                [
+                    {
+                        "Id": "AttackBuff_Base",
+                        "AbilityClass": "Buff",
+                        "Proc": "OnFollow",
+                        "Description": "SpiritHound_AttackBuff_Description",
+                        "Args": {
+                            "BuffId": "attack",
+                            "Magnitude": "1"
+                        }
+                    },
+                    {
+                        "Id": "Melee_Base",
+                        "AbilityClass": "Melee",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 8,
+                        "ProcAnimation": true,
+                        "ProcSound": "daggerswipe",
+                        "Description": "SpiritHound_Melee_Description",
+                        "Args": {
+                            "Range": "320",
+                            "Damage": "8",
+                            "Knockback": "5"
+                        }
+                    }
+                ]
+            ]
+        },
+       
+        "LovedItems": ["(O)724", "(O)438"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_WatcherCrow",
+        "DisplayName": "Watcher Crow",
+        "Description": "An ancient crow that sees far more than it lets on.",
+        "FamiliarType": "Foraging",
+        "Diet": "Omnivore",
+        "AnimalSprite": "assets/sprites/watcher_crow.png",
+        "AlwaysAnimate": true,
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/watcher_crow.png",
+        "AnimalDialogue": "assets/dialogue/watcher_crow.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.15,
+            "AttentionDecayPerDay": 0.15
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "ForageHarvest_Base",
+                        "AbilityClass": "ForageHarvest",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 20,
+                        "ProcAnimation": true,
+                        "ProcSound": "leafrustle",
+                        "Description": "WatcherCrow_ForageHarvest_Description",
+                        "Args": {
+                            "Range": "320"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)420", "(O)281"],
+        "HatedItems": ["(O)766"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_Otter",
+        "DisplayName": "Otter",
+        "Description": "A playful otter that  brings good fishing fortune.",
+        "FamiliarType": "Fishing",
+        "Diet": "Carnivore",
+        "AnimalSprite": "assets/sprites/otter.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/otter.png",
+        "AnimalDialogue": "assets/dialogue/otter.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.2,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "Fisher_Base",
+                        "AbilityClass": "Fisher",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 60,
+                        "ProcAnimation": true,
+                        "ProcSound": "dustMeep",
+                        "Description": "Otter_Fisher_Description",
+                        "Args": {
+                            "Range": "384"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)142", "(O)397"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+     {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_MoonlitOtter",
+        "DisplayName": "Moonlit Otter",
+        "Description": "A playful otter that glimmers with moonlight and brings good fishing fortune.",
+        "FamiliarType": "Fishing",
+        "Diet": "Carnivore",
+        "AnimalSprite": "assets/sprites/moonlit_otter.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/moonlit_otter.png",
+        "AnimalDialogue": "assets/dialogue/moonlit_otter.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.2,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "Fisher_Base",
+                        "AbilityClass": "Fisher",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 60,
+                        "ProcAnimation": true,
+                        "ProcSound": "dustMeep",
+                        "Description": "Otter_Fisher_Description",
+                        "Args": {
+                            "Range": "384"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)142", "(O)397"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_LoonalooOtter",
+        "DisplayName": "Loonaloo Otter",
+        "Description": "A playful otter reminiscent of the loonaloo jellies. Brings good fishing fortune.",
+        "FamiliarType": "Fishing",
+        "Diet": "Carnivore",
+        "AnimalSprite": "assets/sprites/loonaloo_otter.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/loonaloo_otter.png",
+        "AnimalDialogue": "assets/dialogue/loonaloo_otter.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.2,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "Fisher_Base",
+                        "AbilityClass": "Fisher",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 60,
+                        "ProcAnimation": true,
+                        "ProcSound": "dustMeep",
+                        "Description": "Otter_Fisher_Description",
+                        "Args": {
+                            "Range": "384"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)142", "(O)397"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_AetherSquirrel",
+        "DisplayName": "Aether Squirrel",
+        "Description": "A quick-witted squirrel crackling with aetheric energy.",
+        "FamiliarType": "Farming",
+        "Diet": "Herbivore",
+        "AnimalSprite": "assets/sprites/aether_squirrel.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/aether_squirrel.png",
+        "AnimalDialogue": "assets/dialogue/aether_squirrel.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.15,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "CropHarvest_Base",
+                        "AbilityClass": "CropHarvest",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 3,
+                        "ProcAnimation": true,
+                        "Description": "Squirrel_CropHarvest_Description",
+                        "Args": {
+                            "Range": "320"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)88", "(O)78"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_AshenSquirrel",
+        "DisplayName": "Ashen Squirrel",
+        "Description": "A quick-witted squirrel that smells like ash.",
+        "FamiliarType": "Farming",
+        "Diet": "Herbivore",
+        "AnimalSprite": "assets/sprites/ashen_squirrel.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/ashen_squirrel.png",
+        "AnimalDialogue": "assets/dialogue/ashen_squirrel.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.15,
+            "AttentionDecayPerDay": 0.2
+        },
+        "Assistance": {
+            "InventorySize": 12,
+            "AllowDeposit": false,
+            "BuffIcon": "",
+            "Abilities": [
+                [
+                    {
+                        "Id": "CropHarvest_Base",
+                        "AbilityClass": "CropHarvest",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 5,
+                        "ProcAnimation": true,
+                        "Description": "Squirrel_CropHarvest_Description",
+                        "Args": {
+                            "Range": "320"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)88", "(O)78"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+    {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_LullaLamb",
+        "DisplayName": "LullaLamb",
+        "Description": "A comforting lamb said to lure those to slumber, whose wool carries healing properties.",
+        "FamiliarType": "Social",
+        "Diet": "Herbivore",
+        "AnimalSprite": "assets/sprites/lullalamb.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/lullalamb.png",
+        "AnimalDialogue": "assets/dialogue/lullalamb.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.1,
+            "AttentionDecayPerDay": 0.15
+        },
+       "Assistance": {
+            "Abilities": [
+                [
+                    {
+                        "Id": "AnimalFriendship_Base",
+                        "AbilityClass": "AnimalFriendship",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 5,
+                        "ProcAnimation": true,
+                        "ProcSound": "give_gift",
+                        "Description": "LullaLamb_AnimalFriendship_Description",
+                        "Args": {
+                            "Range": "256",
+                            "Amount": "15"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)613", "(O)422"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    },
+     {
+        "FamiliarId": "CodysOasis.TotAG_FAUNA_VaelsFamiliars_AstralEwe",
+        "DisplayName": "Astral Ewe",
+        "Description": "A gentle ewe wrapped in starlight, whose wool carries healing properties.",
+        "FamiliarType": "Social",
+        "Diet": "Herbivore",
+        "AnimalSprite": "assets/sprites/astral_ewe.png",
+        "Speaks": true,
+        "AnimalPortrait": "assets/portraits/astral_ewe.png",
+        "AnimalDialogue": "assets/dialogue/astral_ewe.json",
+        "HasHumanoid": false,
+        "Needs": {
+            "FoodDecayPerDay": 0.1,
+            "AttentionDecayPerDay": 0.15
+        },
+       "Assistance": {
+            "Abilities": [
+                [
+                    {
+                        "Id": "AnimalFriendship_Base",
+                        "AbilityClass": "AnimalFriendship",
+                        "Proc": "OnNearby",
+                        "ProcTimer": 5,
+                        "ProcAnimation": true,
+                        "ProcSound": "give_gift",
+                        "Description": "AstralEwe_AnimalFriendship_Description",
+                        "Args": {
+                            "Range": "256",
+                            "Amount": "15"
+                        }
+                    }
+                ]
+            ]
+        },
+        "LovedItems": ["(O)613", "(O)422"],
+        "HatedItems": ["(O)167"],
+        "DropsLoot": false,
+        "LootPool": []
+    }
+]

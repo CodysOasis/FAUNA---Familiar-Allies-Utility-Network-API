@@ -1,0 +1,52 @@
+{
+    "Format": "2.9.1",
+    "Changes": [
+
+        // Core data
+        { "Action": "Include", "FromFile": "assets/data/familiars.json" },
+        { "Action": "Include", "FromFile": "assets/data/shops.json" },
+        //{ "Action": "Include", "FromFile": "assets/data/textures.json" },
+
+        // ── Sprite Assets ────────────────────────────────────────
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/BlackCat", "FromFile": "assets/sprites/black_cat.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/Hound", "FromFile": "assets/sprites/hound.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/SpiritHound", "FromFile": "assets/sprites/spirit_hound.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/WatcherCrow", "FromFile": "assets/sprites/watcher_crow.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/Otter", "FromFile": "assets/sprites/otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/MoonlitOtter", "FromFile": "assets/sprites/moonlit_otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/LoonalooOtter", "FromFile": "assets/sprites/loonaloo_otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/AetherSquirrel", "FromFile": "assets/sprites/aether_squirrel.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/AshenSquirrel", "FromFile": "assets/sprites/ashen_squirrel.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/LullaLamb", "FromFile": "assets/sprites/lullalamb.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/AstralEwe", "FromFile": "assets/sprites/astral_ewe.png" },
+
+        // ── Portrait Assets ──────────────────────────────────────
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/BlackCat", "FromFile": "assets/portraits/black_cat.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/Hound", "FromFile": "assets/portraits/hound.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/SpiritHound", "FromFile": "assets/portraits/spirit_hound.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/WatcherCrow", "FromFile": "assets/portraits/watcher_crow.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/Otter", "FromFile": "assets/portraits/otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/MoonlitOtter", "FromFile": "assets/portraits/moonlit_otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/LoonalooOtter", "FromFile": "assets/portraits/loonaloo_otter.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/AetherSquirrel", "FromFile": "assets/portraits/aether_squirrel.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/AshenSquirrel", "FromFile": "assets/portraits/ashen_squirrel.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/LullaLamb", "FromFile": "assets/portraits/lullalamb.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/AstralEwe", "FromFile": "assets/portraits/astral_ewe.png" },
+
+        // ── Dialogue Assets ──────────────────────────────────────
+        { "Action": "Include", "FromFile": "assets/data/dialogue/black_cat.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/hound.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/spirit_hound.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/watcher_crow.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/otter.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/moonlit_otter.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/loonaloo_otter.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/aether_squirrel.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/ashen_squirrel.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/lullalamb.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/astral_ewe.json" },
+        
+        // ── Custom Room Assets ─────────────────────────────────────
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Rooms/AstralEwe", "FromFile": "assets/maps/rooms/astral_ewe_room.tmx" }
+    ]
+}

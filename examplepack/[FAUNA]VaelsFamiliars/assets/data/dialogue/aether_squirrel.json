@@ -1,0 +1,136 @@
+{
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/Dialogue/AetherSquirrel",
+            "FromFile": "assets/data/blank.json"
+        },
+
+        {
+            "Action": "EditData",
+            "Target": "Mods/{{ModId}}/Dialogue/AetherSquirrel",
+            "Entries": {
+
+  "Chat_Trust0_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust0_Happy_0}}",
+  "Chat_Trust0_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust0_Happy_1}}",
+  "Chat_Trust0_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust0_Happy_2}}",
+  "Chat_Trust0_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust0_Happy_3}}",
+  "Chat_Trust0_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust0_Happy_4}}",
+
+  "Chat_Trust0_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust0_Sad_0}}",
+  "Chat_Trust0_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust0_Sad_1}}",
+  "Chat_Trust0_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust0_Sad_2}}",
+  "Chat_Trust0_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust0_Sad_3}}",
+  "Chat_Trust0_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust0_Sad_4}}",
+
+  "Chat_Trust2_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust2_Happy_0}}",
+  "Chat_Trust2_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust2_Happy_1}}",
+  "Chat_Trust2_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust2_Happy_2}}",
+  "Chat_Trust2_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust2_Happy_3}}",
+  "Chat_Trust2_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust2_Happy_4}}",
+
+  "Chat_Trust2_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust2_Sad_0}}",
+  "Chat_Trust2_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust2_Sad_1}}",
+  "Chat_Trust2_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust2_Sad_2}}",
+  "Chat_Trust2_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust2_Sad_3}}",
+  "Chat_Trust2_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust2_Sad_4}}",
+
+  "Chat_Trust4_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust4_Happy_0}}",
+  "Chat_Trust4_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust4_Happy_1}}",
+  "Chat_Trust4_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust4_Happy_2}}",
+  "Chat_Trust4_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust4_Happy_3}}",
+  "Chat_Trust4_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust4_Happy_4}}",
+
+  "Chat_Trust4_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust4_Sad_0}}",
+  "Chat_Trust4_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust4_Sad_1}}",
+  "Chat_Trust4_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust4_Sad_2}}",
+  "Chat_Trust4_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust4_Sad_3}}",
+  "Chat_Trust4_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust4_Sad_4}}",
+
+  "Chat_Trust6_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust6_Happy_0}}",
+  "Chat_Trust6_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust6_Happy_1}}",
+  "Chat_Trust6_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust6_Happy_2}}",
+  "Chat_Trust6_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust6_Happy_3}}",
+  "Chat_Trust6_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust6_Happy_4}}",
+
+  "Chat_Trust6_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust6_Sad_0}}",
+  "Chat_Trust6_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust6_Sad_1}}",
+  "Chat_Trust6_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust6_Sad_2}}",
+  "Chat_Trust6_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust6_Sad_3}}",
+  "Chat_Trust6_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust6_Sad_4}}",
+
+  "Chat_Trust8_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust8_Happy_0}}",
+  "Chat_Trust8_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust8_Happy_1}}",
+  "Chat_Trust8_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust8_Happy_2}}",
+  "Chat_Trust8_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust8_Happy_3}}",
+  "Chat_Trust8_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust8_Happy_4}}",
+
+  "Chat_Trust8_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust8_Sad_0}}",
+  "Chat_Trust8_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust8_Sad_1}}",
+  "Chat_Trust8_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust8_Sad_2}}",
+  "Chat_Trust8_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust8_Sad_3}}",
+  "Chat_Trust8_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust8_Sad_4}}",
+
+  "Chat_Trust10_Happy_0": "{{i18n:AetherSquirrel_Chat_Trust10_Happy_0}}",
+  "Chat_Trust10_Happy_1": "{{i18n:AetherSquirrel_Chat_Trust10_Happy_1}}",
+  "Chat_Trust10_Happy_2": "{{i18n:AetherSquirrel_Chat_Trust10_Happy_2}}",
+  "Chat_Trust10_Happy_3": "{{i18n:AetherSquirrel_Chat_Trust10_Happy_3}}",
+  "Chat_Trust10_Happy_4": "{{i18n:AetherSquirrel_Chat_Trust10_Happy_4}}",
+
+  "Chat_Trust10_Sad_0": "{{i18n:AetherSquirrel_Chat_Trust10_Sad_0}}",
+  "Chat_Trust10_Sad_1": "{{i18n:AetherSquirrel_Chat_Trust10_Sad_1}}",
+  "Chat_Trust10_Sad_2": "{{i18n:AetherSquirrel_Chat_Trust10_Sad_2}}",
+  "Chat_Trust10_Sad_3": "{{i18n:AetherSquirrel_Chat_Trust10_Sad_3}}",
+  "Chat_Trust10_Sad_4": "{{i18n:AetherSquirrel_Chat_Trust10_Sad_4}}",
+
+  "AlreadyFed_0": "{{i18n:AetherSquirrel_AlreadyFed_0}}",
+  "AlreadyFed_1": "{{i18n:AetherSquirrel_AlreadyFed_1}}",
+  "AlreadyFed_2": "{{i18n:AetherSquirrel_AlreadyFed_2}}",
+  "AlreadyFed_3": "{{i18n:AetherSquirrel_AlreadyFed_3}}",
+  "AlreadyFed_4": "{{i18n:AetherSquirrel_AlreadyFed_4}}",
+
+  "Fed_0": "{{i18n:AetherSquirrel_Fed_0}}",
+  "Fed_1": "{{i18n:AetherSquirrel_Fed_1}}",
+  "Fed_2": "{{i18n:AetherSquirrel_Fed_2}}",
+  "Fed_3": "{{i18n:AetherSquirrel_Fed_3}}",
+  "Fed_4": "{{i18n:AetherSquirrel_Fed_4}}",
+
+  "AlreadyGifted_0": "{{i18n:AetherSquirrel_AlreadyGifted_0}}",
+  "AlreadyGifted_1": "{{i18n:AetherSquirrel_AlreadyGifted_1}}",
+  "AlreadyGifted_2": "{{i18n:AetherSquirrel_AlreadyGifted_2}}",
+  "AlreadyGifted_3": "{{i18n:AetherSquirrel_AlreadyGifted_3}}",
+  "AlreadyGifted_4": "{{i18n:AetherSquirrel_AlreadyGifted_4}}",
+
+  "Gift_Loved_0": "{{i18n:AetherSquirrel_Gift_Loved_0}}",
+  "Gift_Loved_1": "{{i18n:AetherSquirrel_Gift_Loved_1}}",
+  "Gift_Loved_2": "{{i18n:AetherSquirrel_Gift_Loved_2}}",
+  "Gift_Loved_3": "{{i18n:AetherSquirrel_Gift_Loved_3}}",
+  "Gift_Loved_4": "{{i18n:AetherSquirrel_Gift_Loved_4}}",
+
+  "Gift_Neutral_0": "{{i18n:AetherSquirrel_Gift_Neutral_0}}",
+  "Gift_Neutral_1": "{{i18n:AetherSquirrel_Gift_Neutral_1}}",
+  "Gift_Neutral_2": "{{i18n:AetherSquirrel_Gift_Neutral_2}}",
+  "Gift_Neutral_3": "{{i18n:AetherSquirrel_Gift_Neutral_3}}",
+  "Gift_Neutral_4": "{{i18n:AetherSquirrel_Gift_Neutral_4}}",
+
+  "Gift_Hated_0": "{{i18n:AetherSquirrel_Gift_Hated_0}}",
+  "Gift_Hated_1": "{{i18n:AetherSquirrel_Gift_Hated_1}}",
+  "Gift_Hated_2": "{{i18n:AetherSquirrel_Gift_Hated_2}}",
+  "Gift_Hated_3": "{{i18n:AetherSquirrel_Gift_Hated_3}}",
+  "Gift_Hated_4": "{{i18n:AetherSquirrel_Gift_Hated_4}}",
+
+  "Idle_0": "{{i18n:AetherSquirrel_Idle_0}}",
+  "Idle_1": "{{i18n:AetherSquirrel_Idle_1}}",
+  "Idle_2": "{{i18n:AetherSquirrel_Idle_2}}",
+  "Idle_3": "{{i18n:AetherSquirrel_Idle_3}}",
+  "Idle_4": "{{i18n:AetherSquirrel_Idle_4}}",
+
+  "IdleResponse_0": "{{i18n:AetherSquirrel_IdleResponse_0}}",
+  "IdleResponse_1": "{{i18n:AetherSquirrel_IdleResponse_1}}",
+  "IdleResponse_2": "{{i18n:AetherSquirrel_IdleResponse_2}}",
+  "IdleResponse_3": "{{i18n:AetherSquirrel_IdleResponse_3}}",
+  "IdleResponse_4": "{{i18n:AetherSquirrel_IdleResponse_4}}"
+}
+        }
+      ]
+    }

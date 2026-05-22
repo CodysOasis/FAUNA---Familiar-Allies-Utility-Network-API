@@ -1,0 +1,442 @@
+{
+    "Changes": [
+
+        // ── Familiar Definitions ─────────────────────────────────
+        {
+            "Action": "EditData",
+            "Target": "Mods/CodysOasis.FAUNA/Familiars",
+            "Entries": {
+
+                "{{ModId}}_BlackCat": {
+                    "DisplayName": "Black Cat",
+                    "Description": "A mysterious feline with an affinity for luck.",
+                    "FamiliarType": "Social",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/BlackCat",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/BlackCat",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/BlackCat",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "ExcludeFromDefaultShop": true,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.25 },
+                    "Assistance": {
+                        "BuffIcon": "",
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "LuckBuff_Base",
+                                    "AbilityClass": "Buff",
+                                    "Proc": "OnFollow",
+                                    "Description": "{{i18n:BlackCat_LuckBuff_Description}}",
+                                    "Args": { "BuffId": "luck", "Magnitude": "1" }
+                                }
+                            ],
+                            [
+                                {
+                                    "Id": "LuckBuff_Base",
+                                    "AbilityClass": "Buff",
+                                    "Proc": "OnFollow",
+                                    "Description": "{{i18n:BlackCat_LuckBuff_Description}}",
+                                    "Args": { "BuffId": "luck", "Magnitude": "1" }
+                                },
+                                {
+                                    "Id": "SpeedBuff_Bonus",
+                                    "AbilityClass": "Buff",
+                                    "Proc": "OnFollow",
+                                    "Description": "{{i18n:BlackCat_SpeedBuff_Description}}",
+                                    "Args": { "BuffId": "speed", "Magnitude": "1" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)395", "(O)769", "(O)143", "(O)440" ],
+                    "HatedItems": [ "(O)167", "(O)168" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_Hound": {
+                    "DisplayName": "Hound",
+                    "Description": "A loyal hound that wards off misfortune.",
+                    "FamiliarType": "Combat",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/Hound",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/Hound",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/Hound",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.25 },
+                    "Assistance": {
+                        "BuffIcon": "",
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "Melee_Base",
+                                    "AbilityClass": "Melee",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 4,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "daggerswipe",
+                                    "Description": "{{i18n:Hound_Melee_Description}}",
+                                    "Args": { "Range": "320", "Damage": "10", "Knockback": "5" }
+                                }
+                            ],
+                            [
+                                {
+                                    "Id": "AttackBuff_Base",
+                                    "AbilityClass": "Buff",
+                                    "Proc": "OnFollow",
+                                    "Description": "{{i18n:Hound_AttackBuff_Description}}",
+                                    "Args": { "BuffId": "attack", "Magnitude": "1" }
+                                },
+                                {
+                                    "Id": "Melee_Base",
+                                    "AbilityClass": "Melee",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 8,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "daggerswipe",
+                                    "Description": "{{i18n:Hound_Melee_Description}}",
+                                    "Args": { "Range": "320", "Damage": "8", "Knockback": "5" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)724", "(O)438" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_SpiritHound": {
+                    "DisplayName": "Spirit Hound",
+                    "Description": "A loyal spectral hound that wards off misfortune.",
+                    "FamiliarType": "Combat",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/SpiritHound",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/SpiritHound",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/SpiritHound",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.25, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "BuffIcon": "",
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "Melee_Base",
+                                    "AbilityClass": "Melee",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 4,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "daggerswipe",
+                                    "Description": "{{i18n:SpiritHound_Melee_Description}}",
+                                    "Args": { "Range": "320", "Damage": "10", "Knockback": "5" }
+                                }
+                            ],
+                            [
+                                {
+                                    "Id": "AttackBuff_Base",
+                                    "AbilityClass": "Buff",
+                                    "Proc": "OnFollow",
+                                    "Description": "{{i18n:SpiritHound_AttackBuff_Description}}",
+                                    "Args": { "BuffId": "attack", "Magnitude": "1" }
+                                },
+                                {
+                                    "Id": "Melee_Base",
+                                    "AbilityClass": "Melee",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 8,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "daggerswipe",
+                                    "Description": "{{i18n:SpiritHound_Melee_Description}}",
+                                    "Args": { "Range": "320", "Damage": "8", "Knockback": "5" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)724", "(O)438" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_WatcherCrow": {
+                    "DisplayName": "Watcher Crow",
+                    "Description": "An ancient crow that sees far more than it lets on.",
+                    "FamiliarType": "Foraging",
+                    "Diet": "Omnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/WatcherCrow",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/WatcherCrow",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/WatcherCrow",
+                    "AlwaysAnimate": true,
+                    "AnimateInterval": 15,
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "ForageHarvest_Base",
+                                    "AbilityClass": "ForageHarvest",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 5,
+                                    "ProcAnimation": true,
+                                    "Description": "{{i18n:WatcherCrow_ForageHarvest_Description}}",
+                                    "Args": { "Range": "320" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)725", "(O)80" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_Otter": {
+                    "DisplayName": "Otter",
+                    "Description": "A playful otter that brings good fishing fortune.",
+                    "FamiliarType": "Fishing",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/Otter",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/Otter",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/Otter",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "Fisher_Base",
+                                    "AbilityClass": "Fisher",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 60,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "dustMeep",
+                                    "Description": "{{i18n:Otter_Fisher_Description}}",
+                                    "Args": { "Range": "384" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)142", "(O)397" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_MoonlitOtter": {
+                    "DisplayName": "Moonlit Otter",
+                    "Description": "A playful otter that shimmers in moonlight.",
+                    "FamiliarType": "Fishing",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/MoonlitOtter",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/MoonlitOtter",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/MoonlitOtter",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "Fisher_Base",
+                                    "AbilityClass": "Fisher",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 60,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "dustMeep",
+                                    "Description": "{{i18n:Otter_Fisher_Description}}",
+                                    "Args": { "Range": "384" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)142", "(O)397" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_LoonalooOtter": {
+                    "DisplayName": "Loonaloo Otter",
+                    "Description": "A playful otter reminiscent of the loonaloo jellies. Brings good fishing fortune.",
+                    "FamiliarType": "Fishing",
+                    "Diet": "Carnivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/LoonalooOtter",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/LoonalooOtter",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/LoonalooOtter",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.2, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "Fisher_Base",
+                                    "AbilityClass": "Fisher",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 60,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "dustMeep",
+                                    "Description": "{{i18n:Otter_Fisher_Description}}",
+                                    "Args": { "Range": "384" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)142", "(O)397" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_AetherSquirrel": {
+                    "DisplayName": "Aether Squirrel",
+                    "Description": "A quick-witted squirrel crackling with aetheric energy.",
+                    "FamiliarType": "Farming",
+                    "Diet": "Herbivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/AetherSquirrel",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/AetherSquirrel",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/AetherSquirrel",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.15, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "CropHarvest_Base",
+                                    "AbilityClass": "CropHarvest",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 3,
+                                    "ProcAnimation": true,
+                                    "Description": "{{i18n:Squirrel_CropHarvest_Description}}",
+                                    "Args": { "Range": "320" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)88", "(O)78" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_AshenSquirrel": {
+                    "DisplayName": "Ashen Squirrel",
+                    "Description": "A quick-witted squirrel that smells like ash.",
+                    "FamiliarType": "Farming",
+                    "Diet": "Herbivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/AshenSquirrel",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/AshenSquirrel",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/AshenSquirrel",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.15, "AttentionDecayPerDay": 0.2 },
+                    "Assistance": {
+                        "InventorySize": 12,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "CropHarvest_Base",
+                                    "AbilityClass": "CropHarvest",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 5,
+                                    "ProcAnimation": true,
+                                    "Description": "{{i18n:Squirrel_CropHarvest_Description}}",
+                                    "Args": { "Range": "320" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)88", "(O)78" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_LullaLamb": {
+                    "DisplayName": "LullaLamb",
+                    "Description": "A comforting lamb said to lure those to slumber, whose wool carries healing properties.",
+                    "FamiliarType": "Social",
+                    "Diet": "Herbivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/LullaLamb",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/LullaLamb",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/LullaLamb",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.1, "AttentionDecayPerDay": 0.15 },
+                    "Assistance": {
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "AnimalFriendship_Base",
+                                    "AbilityClass": "AnimalFriendship",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 5,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "give_gift",
+                                    "Description": "{{i18n:LullaLamb_AnimalFriendship_Description}}",
+                                    "Args": { "Range": "256", "Amount": "15" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)613", "(O)422" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                },
+
+                "{{ModId}}_AstralEwe": {
+                    "DisplayName": "Astral Ewe",
+                    "Description": "A gentle ewe wrapped in starlight, whose wool carries healing properties.",
+                    "FamiliarType": "Social",
+                    "Diet": "Herbivore",
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/AstralEwe",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/AstralEwe",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/AstralEwe",
+                    "RoomAsset": "Mods/{{ModId}}/Rooms/AstralEwe",
+                    "Speaks": true,
+                    "HasHumanoid": false,
+                    "Needs": { "FoodDecayPerDay": 0.1, "AttentionDecayPerDay": 0.15 },
+                    "Assistance": {
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "AnimalFriendship_Base",
+                                    "AbilityClass": "AnimalFriendship",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 5,
+                                    "ProcAnimation": true,
+                                    "ProcSound": "give_gift",
+                                    "Description": "{{i18n:AstralEwe_AnimalFriendship_Description}}",
+                                    "Args": { "Range": "256", "Amount": "15" }
+                                }
+                            ]
+                        ]
+                    },
+                    "LovedItems": [ "(O)613", "(O)422" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                }
+            }
+        }
+    ]
+}

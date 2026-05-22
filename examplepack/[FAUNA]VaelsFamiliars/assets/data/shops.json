@@ -1,0 +1,29 @@
+{
+    "Changes": [
+        // ── Shop Definition ──────────────────────────────────────
+        {
+            "Action": "EditData",
+            "Target": "Mods/CodysOasis.FAUNA/Shops",
+            "Entries": {
+                "{{ModId}}_VaelFamiliarShop": {
+                    "ShopId": "{{ModId}}_VaelFamiliarShop",
+                    "DisplayName": "Vael's Familiar Shop",
+                    "ShopOwner": "CodysOasis.TotAG_CP_AetherGlade_Vael",
+                    "Stock": [
+                        { "FamiliarId": "{{ModId}}_BlackCat", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 500" },
+                        { "FamiliarId": "{{ModId}}_Hound", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 500" },
+                        { "FamiliarId": "{{ModId}}_SpiritHound", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 500" },
+                        { "FamiliarId": "{{ModId}}_WatcherCrow", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 1000" },
+                        { "FamiliarId": "{{ModId}}_Otter", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 1500" },
+                        { "FamiliarId": "{{ModId}}_MoonlitOtter", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 1500" },
+                        { "FamiliarId": "{{ModId}}_LoonalooOtter", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 1500" },
+                        { "FamiliarId": "{{ModId}}_AetherSquirrel", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 2000" },
+                        { "FamiliarId": "{{ModId}}_AshenSquirrel", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 2000" },
+                        { "FamiliarId": "{{ModId}}_AstralEwe", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 2000" },
+                        { "FamiliarId": "{{ModId}}_LullaLamb", "Price": 2000, "Condition": "PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 2000" }
+                    ]
+                }
+            }
+        }
+    ]
+}
