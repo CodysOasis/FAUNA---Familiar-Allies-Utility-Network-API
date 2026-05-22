@@ -1,8 +1,0 @@
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\bin\Debug\net6.0\FamiliarFramework.deps.json
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\bin\Debug\net6.0\FamiliarFramework.dll
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.csproj.AssemblyReference.cache
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.AssemblyInfoInputs.cache
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.AssemblyInfo.cs
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.csproj.CoreCompileInputs.cache
-C:\Users\Middl\Desktop\MODDING\FamiliarFramework\obj\Debug\net6.0\FamiliarFramework.dll

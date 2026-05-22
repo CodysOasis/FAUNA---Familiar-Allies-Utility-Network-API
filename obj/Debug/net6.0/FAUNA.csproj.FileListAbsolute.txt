@@ -1,8 +1,0 @@
-C:\Users\Middl\Desktop\MODDING\FAUNA\bin\Debug\net6.0\FAUNA.deps.json
-C:\Users\Middl\Desktop\MODDING\FAUNA\bin\Debug\net6.0\FAUNA.dll
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.csproj.AssemblyReference.cache
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.AssemblyInfoInputs.cache
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.AssemblyInfo.cs
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.csproj.CoreCompileInputs.cache
-C:\Users\Middl\Desktop\MODDING\FAUNA\obj\Debug\net6.0\FAUNA.dll
