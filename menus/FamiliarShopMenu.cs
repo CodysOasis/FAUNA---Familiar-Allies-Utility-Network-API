@@ -87,12 +87,23 @@ namespace FAUNA
         }
         private void BuildStock(FamiliarShopData shop)
         {
+            // For the default shop, build stock dynamically from all registered familiars
+            var entries = shop.ShopId == "ouija_default"
+                ? ModEntry.RegisteredFamiliars
+                    .Where(kvp => !kvp.Value.ExcludeFromDefaultShop)
+                    .Select(kvp => new FamiliarShopEntry
+                    {
+                        FamiliarId = kvp.Key,
+                        Price = kvp.Value.DefaultShopPrice > 0 ? kvp.Value.DefaultShopPrice : 2000
+                    })
+                    .ToList()
+                : shop.Stock;
+
             string currentSeason = Game1.currentSeason;
-            foreach (var entry in shop.Stock)
+            foreach (var entry in entries)
             {
                 if (!string.IsNullOrEmpty(entry.Season) &&
-                    !entry.Season.Equals(currentSeason, 
-                        StringComparison.OrdinalIgnoreCase))
+                    !entry.Season.Equals(currentSeason, StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 if (!string.IsNullOrEmpty(entry.Condition))
@@ -110,7 +121,6 @@ namespace FAUNA
 
                 _stock.Add(entry);
             }
-            
         }
 
         // ─────────────────────────────────────────────────────────

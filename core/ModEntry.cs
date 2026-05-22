@@ -147,7 +147,23 @@ namespace FAUNA
                 n.IsEquivalentTo("Mods/CodysOasis.FAUNA/Shops")))
             {
                 FamiliarCache.Build();
-                Monitor.Log("[FAUNA] Assets invalidated — rebuilt familiar cache.", LogLevel.Debug);
+
+                // Reload shops from CP asset
+                FamiliarShopRegistry.Clear(); 
+                var shops = Helper.GameContent.Load<Dictionary<string, FamiliarShopData>>(
+                    "Mods/CodysOasis.FAUNA/Shops");
+                foreach (var kvp in shops)
+                    FamiliarShopRegistry.RegisterShop(kvp.Value);
+                RegisterDefaultShop();
+
+                Monitor.Log("[FAUNA] Assets invalidated — rebuilt familiar and shop cache.", LogLevel.Debug);
+            }
+
+            // Clear dialogue cache if any dialogue asset was invalidated
+            if (e.NamesWithoutLocale.Any(n => n?.ToString()?.Contains("/Dialogue/") == true))
+            {
+                FamiliarCache.ClearDialogueCache();
+                Monitor.Log("[FAUNA] Dialogue assets invalidated — cleared dialogue cache.", LogLevel.Debug);
             }
         }
        public override void Entry(IModHelper helper)
@@ -192,7 +208,6 @@ namespace FAUNA
             Helper.Events.GameLoop.UpdateTicking += OnFirstTick;
             Translation = Helper.Translation;
             HarmonyPatches.Apply(ModManifest.UniqueID);
-            RegisterDefaultShop();
             SetupGMCM();
 
             // Register custom tile action for FAUNA familiar shops
@@ -268,10 +283,11 @@ namespace FAUNA
             _pendingSpawn = true;
             
         }
-        private void OnFirstTick(object? sender, UpdateTickingEventArgs e)
+       private void OnFirstTick(object? sender, UpdateTickingEventArgs e)
         {
             Helper.Events.GameLoop.UpdateTicking -= OnFirstTick;
-            FamiliarCache.Build();
+            // Don't load assets here — CP hasn't patched them yet
+            // OnAssetsInvalidated handles the real load after CP fires
             RegisterDefaultShop();
             Monitor.Log($"FAUNA loaded {RegisteredFamiliars.Count} familiar(s) total.", LogLevel.Info);
         }

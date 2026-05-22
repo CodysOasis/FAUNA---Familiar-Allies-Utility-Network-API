@@ -73,6 +73,11 @@ namespace FAUNA
             Shops[shop.ShopId] = shop;
         }
 
+        public static void Clear()
+        {
+            Shops.Clear();
+        }
+
         /// <summary>
         /// Get a shop by ID.
         /// </summary>

@@ -104,6 +104,11 @@ namespace FAUNA
             }
         }
 
+        public static void ClearDialogueCache()
+        {
+            DialogueCache.Clear();
+        }
+
         // ─────────────────────────────────────────────────────────
         // Clear
         // ─────────────────────────────────────────────────────────

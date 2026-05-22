@@ -7,13 +7,10 @@
     "EntryDll": "FAUNA.dll",
     "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "Nexus:46494" ],
-    "ContentPackFor": {
-        "UniqueID": "Pathoschild.ContentPatcher"
-    },
     "Dependencies": [
-    {
-      "UniqueID": "Pathoschild.ContentPatcher",
-      "IsRequired": true
-    }
-  ]
+        {
+            "UniqueID": "Pathoschild.ContentPatcher",
+            "IsRequired": true
+        }
+    ]
 }
