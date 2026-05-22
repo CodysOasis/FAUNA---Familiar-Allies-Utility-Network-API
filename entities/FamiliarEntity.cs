@@ -40,7 +40,6 @@ namespace FAUNA
         // Movement / AI fields
         // ─────────────────────────────────────────────────────────
 
-
         // Idle chatter
         private int _idleChatterTimer    = 0;
         private int _idleChatterInterval = 0;

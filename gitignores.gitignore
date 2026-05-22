@@ -1,0 +1,27 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docview
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SMAPI build artifacts
+*.pdb
+*.deps.json
+
+# Local config (don't share personal paths)
+*.local.json

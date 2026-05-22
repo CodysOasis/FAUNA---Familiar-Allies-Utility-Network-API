@@ -12,6 +12,7 @@ namespace FAUNA
 
         private int _facingDirection = 2;
         private bool _wasIdling = false;
+        private float _animateTimer = 0f;
         private Vector2 _frozenFollowTarget = Vector2.Zero;
 
         private Stack<Point> _navPath = new();
@@ -37,9 +38,9 @@ namespace FAUNA
 public bool IsTileBlocked(GameLocation location, Vector2 pos)
 {
     // Check every tile the bounding box overlaps
-    int left   = (int)(pos.X + 8)  / 64;
-    int right  = (int)(pos.X + 24) / 64;
-    int top    = (int)(pos.Y + 16) / 64;
+    int left   = (int)(pos.X + 4)  / 64;
+    int right  = (int)(pos.X + 28) / 64;
+    int top    = (int)(pos.Y + 8)  / 64;
     int bottom = (int)(pos.Y + 32) / 64;
 
     int mapW = location.map.Layers[0].LayerSize.Width;
@@ -167,13 +168,21 @@ private bool HasLineOfSight(GameLocation location, Vector2 from, Vector2 to)
                 _pauseDuration--;
 
                 if (alwaysAnimate)
-                    AnimateMovement(time);
+                    TickAlwaysAnimate(time); // was AnimateMovement(time)
 
                 if (_pauseDuration <= 0)
                 {
                     _facingDirection = Game1.random.Next(4);
                     _moveDuration    = Game1.random.Next(60, 240);
-                    _isMoving        = true;
+                    
+                    // Don't start moving if already in a blocked tile
+                    if (IsTileBlocked(location, Position))
+                    {
+                        // Try to nudge to nearest open tile
+                        Position = FindOpenTileNear(location, Position);
+                    }
+                    
+                    _isMoving = true;
                     faceDirection(_facingDirection);
                 }
             }
@@ -258,7 +267,7 @@ private bool HasLineOfSight(GameLocation location, Vector2 from, Vector2 to)
                 if (ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var famData)
                     && famData.AlwaysAnimate
                     && instance?.CurrentForm == FamiliarForm.Animal)
-                    AnimateMovement(time);
+                    TickAlwaysAnimate(time); // was AnimateMovement(time)
                 else
                     Sprite.currentFrame = 16;
                 return;
@@ -273,7 +282,7 @@ private bool HasLineOfSight(GameLocation location, Vector2 from, Vector2 to)
                 if (ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var famData)
                     && famData.AlwaysAnimate
                     && instance?.CurrentForm == FamiliarForm.Animal)
-                    AnimateMovement(time);
+                    TickAlwaysAnimate(time); // was AnimateMovement(time)
                 else
                     Sprite.currentFrame = 16;
                 return;
@@ -523,6 +532,20 @@ private bool HasLineOfSight(GameLocation location, Vector2 from, Vector2 to)
                 case 1: Sprite.Animate(time,  4, 4, 100f); break;
                 case 2: Sprite.Animate(time,  0, 4, 100f); break;
                 case 3: Sprite.Animate(time, 12, 4, 100f); break;
+            }
+        }
+
+        private void TickAlwaysAnimate(GameTime time)
+        {
+            _animateTimer += (float)time.ElapsedGameTime.TotalMilliseconds;
+            
+            if (!ModEntry.RegisteredFamiliars.TryGetValue(FamiliarId, out var data))
+                return;
+                
+            if (_animateTimer >= data.AnimateInterval)
+            {
+                _animateTimer = 0f;
+                AnimateMovement(time);
             }
         }
     }

@@ -25,6 +25,8 @@ namespace FAUNA
         // --- Animal Form ---
         public bool Speaks { get; set; } = true;
         public bool AlwaysAnimate { get; set; } = false;
+        // Only used if AlwaysAnimate is true — milliseconds per frame
+        public float AnimateInterval { get; set; } = 60f; 
 
         // --- Humanoid Form (optional) ---
         public bool HasHumanoid { get; set; } = false;

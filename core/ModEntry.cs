@@ -190,10 +190,20 @@ namespace FAUNA
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Player.Warped += OnWarped;
             helper.ConsoleCommands.Add("ff_reset", "Resets all familiar save data.", (cmd, args) =>
-        {
-            FamiliarManager!.ResetAllFamiliars();
-            Monitor.Log("Familiar save data cleared — reload your save.", LogLevel.Warn);
-        });
+            {
+                FamiliarManager!.ResetAllFamiliars();
+                Monitor.Log("Familiar save data cleared — reload your save.", LogLevel.Warn);
+            });
+            helper.ConsoleCommands.Add("ff_list", "Lists all owned familiars.", (cmd, args) =>
+            {
+                if (FamiliarManager?.OwnedFamiliars == null || FamiliarManager.OwnedFamiliars.Count == 0)
+                {
+                    Monitor.Log("No familiars owned.", LogLevel.Info);
+                    return;
+                }
+                foreach (var f in FamiliarManager.OwnedFamiliars)
+                    Monitor.Log($"  ID: {f.FamiliarId} | Name: {f.CustomName} | Trust: {f.Trust}", LogLevel.Info);
+            });
         
         }
         public override object? GetApi()
@@ -227,6 +237,12 @@ namespace FAUNA
                 }
 
                 Game1.activeClickableMenu = new FamiliarShopMenu(shop);
+                return true;
+            });
+
+            GameLocation.RegisterTileAction("FAUNA.OpenFamiliarLog", (location, args, player, tile) =>
+            {
+                Game1.activeClickableMenu = new FamiliarMenu();
                 return true;
             });
         }
@@ -286,8 +302,23 @@ namespace FAUNA
        private void OnFirstTick(object? sender, UpdateTickingEventArgs e)
         {
             Helper.Events.GameLoop.UpdateTicking -= OnFirstTick;
-            // Don't load assets here — CP hasn't patched them yet
-            // OnAssetsInvalidated handles the real load after CP fires
+            
+            // Force the asset to be requested so CP applies its patches
+            // and OnAssetsInvalidated fires to build the cache
+            Helper.GameContent.Load<Dictionary<string, FamiliarData>>(
+                "Mods/CodysOasis.FAUNA/Familiars");
+            Helper.GameContent.Load<Dictionary<string, FamiliarShopData>>(
+                "Mods/CodysOasis.FAUNA/Shops");
+
+            FamiliarCache.Build();
+
+            // Load shops
+            FamiliarShopRegistry.Clear();
+            var shops = Helper.GameContent.Load<Dictionary<string, FamiliarShopData>>(
+                "Mods/CodysOasis.FAUNA/Shops");
+            foreach (var kvp in shops)
+                FamiliarShopRegistry.RegisterShop(kvp.Value);
+
             RegisterDefaultShop();
             Monitor.Log($"FAUNA loaded {RegisteredFamiliars.Count} familiar(s) total.", LogLevel.Info);
         }

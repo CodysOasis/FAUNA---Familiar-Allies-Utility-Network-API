@@ -36,13 +36,11 @@ namespace FAUNA
             int cat = obj.Category;
 
             bool isEggOrMilk  = cat == -5 || cat == -6;
-            bool isFish  = cat == -4;
+            bool isFish  = cat == -4 ;
             bool isFruitOrVeg = cat == -75 || cat == -79;
+            bool isBugMeat = obj.ItemId == "684" || obj.ItemId == "874";
 
             // Check for Animal Husbandry meat via context tags
-            // AHM meat items use the context tag "cow_milk_item" equivalent pattern;
-            // safest detection is checking if the item name contains known meat names,
-            // OR checking for the mod's UniqueID being loaded
             bool isMeat = false;
             bool animalHusbandryLoaded = ModEntry.ModHelper.ModRegistry.IsLoaded("DIGUS.AnimalHusbandryMod");
             if (animalHusbandryLoaded)
@@ -56,9 +54,9 @@ namespace FAUNA
 
             return diet switch
             {
-                DietType.Carnivore => isEggOrMilk || isMeat || isFish,
+                DietType.Carnivore => isEggOrMilk || isMeat || isFish || isBugMeat,
                 DietType.Herbivore => isFruitOrVeg,
-                DietType.Omnivore  => isEggOrMilk || isFruitOrVeg || isMeat,
+                DietType.Omnivore  => isEggOrMilk || isFruitOrVeg || isMeat || isBugMeat ||isFish,
                 _ => false
             };
         }
