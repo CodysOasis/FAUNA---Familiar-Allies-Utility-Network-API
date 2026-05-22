@@ -87,7 +87,6 @@ The dictionary key is the FamiliarId — use `{{ModId}}` so it's automatically n
 **`assets/data/familiars.json`:**
 ```jsonc
 {
-    "Format": "2.9.1",
     "Changes": [
         {
             "Action": "EditData",
@@ -258,7 +257,6 @@ All textures and dialogue are registered as CP game assets. Add `Load` patches i
 
 ```jsonc
 {
-    "Format": "2.9.1",
     "Changes": [
         { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/YourFamiliar", "FromFile": "assets/sprites/your_familiar.png" },
         { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/YourFamiliar", "FromFile": "assets/portraits/your_familiar.png" },
@@ -299,7 +297,6 @@ Dialogue files are registered as CP game assets using a `blank.json` seed + `Edi
 **`assets/data/dialogue/your_familiar.json`:**
 ```jsonc
 {
-    "Format": "2.9.1",
     "Changes": [
         {
             "Action": "Load",
