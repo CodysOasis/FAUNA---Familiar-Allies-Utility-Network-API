@@ -1,7 +1,7 @@
 {
     "Name": "FAUNA",
     "Author": "CodysOasis",
-    "Version": "0.1.1",
+    "Version": "1.1.0",
     "Description": "A framework for adding custom Familiars to Stardew Valley.",
     "UniqueID": "CodysOasis.FAUNA",
     "EntryDll": "FAUNA.dll",
