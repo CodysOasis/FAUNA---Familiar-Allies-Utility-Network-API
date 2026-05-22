@@ -1,174 +1,189 @@
-# FAUNA — Familiar Allies Utility Network API
+# FAUNA — Author Guide
 
-> *Something stirs at the edges of Pelican Town. Not a monster. Not quite an animal. Something older — a creature that watches, learns, and chooses.*
+FAUNA content packs are standard **Content Patcher** packs. No C# required — just JSON, sprites, and the CP workflow you already know.
 
-**FAUNA** is a SMAPI framework that adds **Familiars** as a new entity class to Stardew Valley. Familiars are distinct from pets, trinkets, and NPCs — they have their own stat system, dialogue, gift responses, diet types, abilities, and a dedicated farm building to live in.
-
-FAUNA provides the engine. Content packs bring the creatures.
+If you're not familiar with Content Patcher basics, read the [CP author guide](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md) first.
 
 ---
 
 ## Requirements
 
-- [SMAPI](https://smapi.io/) (latest)
-- Stardew Valley (latest)
+Your pack's `manifest.json` should declare CP as its framework and FAUNA as a dependency:
 
-No Content Patcher dependency. No other frameworks required.
-
----
-
-## For Players
-
-FAUNA adds two things to your game on its own:
-
-- **The Familiar Den** — a new farm building (built via Robin's shop) where your familiars live
-- **The Ouija Board** — a craftable item that acts as a shop to purchase familiars
-
-Install a FAUNA content pack to actually add familiars. On its own, FAUNA won't add any creatures.
-
----
-
-## For Mod Authors
-
-> If you're looking to create a FAUNA content pack, this section is for you.
-
-A FAUNA content pack is a standard SMAPI content pack. No C# required.
-
-I've included the pack I made for reference, feel free to use as you please! 
-
-### Pack Structure
-
-```
-[FAUNA] YourMod/
-├── manifest.json
-├── familiars.json
-├── shops.json              ← optional
-└── assets/
-    ├── sprites/
-    │   └── YourFamiliar.png
-    └── portraits/          ← optional
-        └── YourFamiliar.png
-```
-
----
-
-### manifest.json
-
-```json
+```jsonc
 {
-  "Name": "Your Mod Name",
-  "Author": "YourName",
-  "Version": "1.0.0",
-  "Description": "A FAUNA content pack.",
-  "UniqueID": "YourName.YourModName",
-  "ContentPackFor": {
-    "UniqueID": "CodysOasis.FAUNA",
-    "MinimumVersion": "1.0.0"
-  }
+    "Name": "Your Pack Name",
+    "Author": "YourName",
+    "Version": "1.0.0",
+    "Description": "A FAUNA content pack.",
+    "UniqueID": "YourName.YourModName",
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "Pathoschild.ContentPatcher",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "CodysOasis.FAUNA",
+            "IsRequired": true,
+            "MinimumVersion": "1.1.0"
+        }
+    ]
 }
 ```
 
 ---
 
-### familiars.json
+## Pack Structure
 
-Defines one or more familiar species. Each entry is a `FamiliarData` object.
+```
+[FAUNA] YourMod/
+├── manifest.json
+├── content.json
+├── i18n/
+│   └── default.json
+└── assets/
+    ├── data/
+    │   ├── familiars.json
+    │   ├── shops.json
+    │   ├── textures.json
+    │   └── dialogue/
+    │       ├── familiar_one.json
+    │       └── familiar_two.json
+    ├── sprites/
+    ├── portraits/
+    ├── icons/
+    └── dialogue/
+        └── blank.json
+```
+---
 
-```json
-[
-  {
-    "FamiliarId": "YourName.YourMod_FamiliarName",
-    "DisplayName": "Familiar Name",
-    "Description": "Shown in the Familiar Den UI.",
-    "FamiliarType": "Foraging",
+## content.json
 
-    "ExcludeFromDefaultShop": false,
-    "DefaultShopPrice": 2000,
+Your `content.json` uses `Action: Include` to keep things organized:
 
-    "AnimalSprite": "assets/sprites/FamiliarName.png",
-    "AnimalPortrait": "assets/portraits/FamiliarName.png",
-    "AnimalDialogue": "assets/dialogue/FamiliarName.json",
-    "Speaks": true,
-    "AlwaysAnimate": false,
-
-    "Diet": "Omnivore",
-
-    "Needs": {
-      "FoodDecayPerDay": 0.2,
-      "AttentionDecayPerDay": 0.25
-    },
-
-    "LovedItems": ["(O)724"],
-    "HatedItems": ["(O)262"],
-
-    "Assistance": {
-      "BuffIcon": "assets/icons/FamiliarName.png",
-      "InventorySize": 0,
-      "AllowDeposit": false,
-      "Abilities": [
-        [],
-        [],
-        [
-          {
-            "Id": "YourName.YourMod_FamiliarName_Ability1",
-            "AbilityClass": "ForageHarvest",
-            "Description": "FamiliarName_Ability1_Description",
-            "Proc": "OnNearby",
-            "ProcTimer": 60.0,
-            "Condition": "",
-            "ProcSound": "",
-            "ProcAnimation": false,
-            "Args": {}
-          }
-        ]
-      ]
-    },
-
-  }
-]
+```jsonc
+{
+    "Format": "2.9.1",
+    "Changes": [
+        { "Action": "Include", "FromFile": "assets/data/familiars.json" },
+        { "Action": "Include", "FromFile": "assets/data/shops.json" },
+        { "Action": "Include", "FromFile": "assets/data/textures.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/familiar_one.json" },
+        { "Action": "Include", "FromFile": "assets/data/dialogue/familiar_two.json" }
+    ]
+}
 ```
 
 ---
 
-#### FamiliarData Fields
+## Registering Familiars
+
+Familiars are registered by editing the `Mods/CodysOasis.FAUNA/Familiars` game asset.  
+The dictionary key is the FamiliarId — use `{{ModId}}` so it's automatically namespaced.
+
+**`assets/data/familiars.json`:**
+```jsonc
+{
+    "Format": "2.9.1",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/CodysOasis.FAUNA/Familiars",
+            "Entries": {
+                "{{ModId}}_YourFamiliar": {
+                    "DisplayName": "{{i18n:YourFamiliar.name}}",
+                    "Description": "{{i18n:YourFamiliar.desc}}",
+                    "FamiliarType": "Foraging",
+                    "Diet": "Omnivore",
+
+                    "SpriteAsset": "Mods/{{ModId}}/Sprites/YourFamiliar",
+                    "PortraitAsset": "Mods/{{ModId}}/Portraits/YourFamiliar",
+                    "DialogueAsset": "Mods/{{ModId}}/Dialogue/YourFamiliar",
+                    "Speaks": true,
+                    "AlwaysAnimate": false,
+                    "AnimateInterval": 80,
+
+                    "ExcludeFromDefaultShop": false,
+                    "DefaultShopPrice": 2000,
+
+                    "Needs": {
+                        "FoodDecayPerDay": 0.2,
+                        "AttentionDecayPerDay": 0.25
+                    },
+
+                    "Assistance": {
+                        "BuffIcon": "Mods/{{ModId}}/Icons/YourFamiliar",
+                        "InventorySize": 0,
+                        "AllowDeposit": false,
+                        "Abilities": [
+                            [
+                                {
+                                    "Id": "{{ModId}}_YourFamiliar_Ability",
+                                    "AbilityClass": "ForageHarvest",
+                                    "Description": "{{i18n:YourFamiliar.ability.desc}}",
+                                    "Proc": "OnNearby",
+                                    "ProcTimer": 60.0,
+                                    "ProcAnimation": true,
+                                    "Args": { "Range": "320" }
+                                }
+                            ]
+                        ]
+                    },
+
+                    "LovedItems": [ "(O)724" ],
+                    "HatedItems": [ "(O)167" ],
+                    "DropsLoot": false,
+                    "LootPool": []
+                }
+            }
+        }
+    ]
+}
+```
+
+---
+
+## FamiliarData Fields
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `FamiliarId` | string | *(required)* | Unique ID. Use `AuthorName.ModName_FamiliarName` format. |
-| `DisplayName` | string | *(required)* | Name shown in-game. |
-| `Description` | string | `""` | Short text shown in the Familiar Den UI. |
-| `FamiliarType` | string | `""` | Category label. Informal — e.g. `"Combat"`, `"Foraging"`, `"Farming"`, `"Social"`. |
-| `ExcludeFromDefaultShop` | bool | `false` | If `true`, this familiar won't appear in the Ouija Board shop. |
-| `DefaultShopPrice` | int | `5000` | Price in the Ouija Board shop. Ignored if `ExcludeFromDefaultShop` is `true`. |
-| `AnimalSprite` | string | `""` | Path to sprite sheet PNG, relative to your mod folder. |
-| `AnimalPortrait` | string | `""` | Path to portrait sheet PNG. Optional — omit for no portrait. |
-| `AnimalDialogue` | string | `""` | Path to dialogue JSON file. Required if `Speaks` is `true`. |
-| `Speaks` | bool | `true` | If `true`, the familiar can be talked to and will show dialogue. |
-| `AlwaysAnimate` | bool | `false` | If `true`, the familiar animates even when idle. Use for flying familiars. |
-| `Diet` | DietType | `Omnivore` | One of: `Carnivore`, `Herbivore`, `Omnivore`. Controls what food the familiar accepts. |
+| `DisplayName` | string | *(required)* | Name shown in-game. Supports `{{i18n:key}}`. |
+| `Description` | string | `""` | Short text shown in menus. Supports `{{i18n:key}}`. |
+| `FamiliarType` | string | `""` | Informal category label e.g. `"Combat"`, `"Foraging"`, `"Farming"`, `"Social"`. |
+| `Diet` | DietType | `Omnivore` | One of: `Carnivore`, `Herbivore`, `Omnivore`. |
+| `SpriteAsset` | string | *(required)* | Game asset path for the spritesheet. |
+| `PortraitAsset` | string | `""` | Game asset path for the portrait. Optional. |
+| `DialogueAsset` | string | `""` | Game asset path for the dialogue dictionary. Required if `Speaks: true`. |
+| `RoomAsset` | string | `""` | Game asset path for a custom den room TMX. Optional — falls back to default room. |
+| `Speaks` | bool | `true` | Whether the familiar shows dialogue when interacted with. |
+| `AlwaysAnimate` | bool | `false` | If `true`, animates even when idle. Use for flying familiars. |
+| `AnimateInterval` | float | `80` | Milliseconds per frame when idle-animating. Lower = faster. Only used if `AlwaysAnimate: true`. |
+| `ExcludeFromDefaultShop` | bool | `false` | If `true`, won't appear in the Ouija Board shop. |
+| `DefaultShopPrice` | int | `5000` | Price in the Ouija Board shop. |
 | `Needs` | NeedsData | *(see below)* | Daily stat decay rates. |
-| `LovedItems` | string[] | `[]` | Item IDs the familiar loves as gifts. |
-| `HatedItems` | string[] | `[]` | Item IDs the familiar hates as gifts. |
+| `LovedItems` | string[] | `[]` | Qualified item IDs the familiar loves as gifts. |
+| `HatedItems` | string[] | `[]` | Qualified item IDs the familiar hates as gifts. |
 | `Assistance` | AssistanceData | *(see below)* | Ability configuration. |
 
-> **Not yet functional:** `HasHumanoid`, `HumanoidSprite`, `HumanoidPortrait`, `HumanoidDialogue` — humanoid form support is defined in the schema but not yet implemented. These fields can be included for forward compatibility but will have no effect. `DropsLoot` and `LootPool` are also reserved for a future update. If `speaks` is set to false, I recommend turning attention decay to zero, as the only other way to raise attention is through giving gifts.
+> **Not yet implemented:** `HasHumanoid`, `HumanoidSpriteAsset`, `HumanoidPortraitAsset`, `HumanoidDialogueAsset` — defined in the schema for forward compatibility but currently have no effect. `DropsLoot` and `LootPool` are also reserved for a future update.
 
 ---
 
-#### NeedsData
-
-Controls how fast each need decays per in-game day. Values are on a `0.0`–`1.0` scale.
+## NeedsData
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `FoodDecayPerDay` | `0.2` | How much the familiar's Food need drops each day. |
-| `AttentionDecayPerDay` | `0.25` | How much the Attention need drops each day. |
+| `FoodDecayPerDay` | `0.2` | Food need decay per day. `0.0`–`1.0` scale. |
+| `AttentionDecayPerDay` | `0.25` | Attention need decay per day. |
 
-Familiar mood is derived from the average of their current needs. Trust is a long-term stat that grows through consistent care — but it will slowly decay if the familiar is neglected for extended periods.
+> If `Speaks: false`, set `AttentionDecayPerDay` to `0` — the only other way to raise attention is gifting.
 
 ---
 
-#### Diet Types
+## Diet Types
 
 | Value | Accepts |
 |-------|---------|
@@ -178,29 +193,21 @@ Familiar mood is derived from the average of their current needs. Trust is a lon
 
 ---
 
-#### Gift Tastes
-
-Use Qualified Stardew Valley item IDs (e.g. `"(O)724"` for Fried Egg). See the [Stardew Valley Wiki](https://stardewvalleywiki.com/Modding:Item_queries) for item ID reference.
-
-FAUNA supports `LovedItems` and `HatedItems`. Any item not listed in either defaults to a **Neutral** response. Additional tiers may be added in a future update.
-
----
-
-#### AssistanceData
+## AssistanceData
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `BuffIcon` | string | `""` | Icon shown in the buff bar while the familiar is following. Falls back to the FAUNA default icon. |
-| `InventorySize` | int | `0` | Number of inventory slots the familiar has. `0` = no inventory. |
-| `AllowDeposit` | bool | `false` | If `true`, the player can place items into the familiar's inventory. |
-| `Abilities` | List\<List\<AbilityData\>\> | `[]` | Abilities organized by trust tier. See below. |
+| `BuffIcon` | string | `""` | Game asset path for buff bar icon. Should be a single image — FAUNA always uses index 0. Falls back to FAUNA default if empty. |
+| `InventorySize` | int | `0` | Familiar inventory slots. `0` = no inventory. |
+| `AllowDeposit` | bool | `false` | If `true`, player can put items into the familiar's inventory. |
+| `Abilities` | List\<List\<AbilityData\>\> | `[]` | Abilities by trust tier. See below. |
 
-**Ability Tiers**
+### Ability Tiers
 
-Abilities are a positional list of lists — the index corresponds to the trust tier. Abilities within each tier all run simultaneously.
+Each index corresponds to a trust tier. Abilities within a tier all run simultaneously.
 
-| Index | Hearts |
-|-------|--------|
+| Index | Hearts Required |
+|-------|----------------|
 | `0` | 0 hearts |
 | `1` | 2 hearts |
 | `2` | 4 hearts |
@@ -208,163 +215,184 @@ Abilities are a positional list of lists — the index corresponds to the trust 
 | `4` | 8 hearts |
 | `5` | 10 hearts |
 
-Pass `[]` for a tier with no new abilities. You only need to include entries up to your highest defined tier — you don't need to define all 6. If the player's trust exceeds the highest defined tier, FAUNA falls back to that highest tier.
+Pass `[]` for tiers with no new abilities. You don't need to define all 6 — FAUNA falls back to the highest defined tier.
 
 ---
 
-#### AbilityData
+## AbilityData
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `Id` | string | *(required)* | Unique ID for this ability. Use `AuthorName.ModName_FamiliarName_AbilityName`. |
-| `AbilityClass` | string | `"Nop"` | What the ability does. See ability classes below. |
-| `Description` | string | `""` | UI description. Use an i18n key (e.g. `"i18n:MyAbility_Description"`). |
-| `Proc` | string | `"OnFollow"` | When the ability activates. `"OnFollow"` (timed, while following) or `"OnNearby"` (when a target is in range). |
-| `ProcTimer` | float | `60.0` | Cooldown in real-time seconds between procs. `-1` = no cooldown. |
-| `Condition` | string | `""` | Optional GSQ condition that must pass before the ability procs. |
-| `ProcSound` | string | `""` | Sound cue to play on proc. |
-| `ProcAnimation` | bool | `false` | If `true`, plays the Row 10 proc animation (frames 36–39) on proc. |
-| `Args` | Dictionary\<string, string\> | `{}` | Ability-class-specific arguments. See below. |
+| `Id` | string | *(required)* | Unique ability ID. Use `{{ModId}}_FamiliarName_AbilityName`. |
+| `AbilityClass` | string | `"Nop"` | What the ability does. See below. |
+| `Description` | string | `""` | UI description. Supports `{{i18n:key}}`. |
+| `Proc` | string | `"OnFollow"` | `"OnFollow"` (timed, while following) or `"OnNearby"` (target in range). |
+| `ProcTimer` | float | `60.0` | Cooldown in real-time seconds. `-1` = no cooldown. |
+| `Condition` | string | `""` | GSQ condition that must pass before proc. |
+| `ProcSound` | string | `""` | Sound cue on proc. |
+| `ProcAnimation` | bool | `false` | If `true`, plays Row 10 proc animation (frames 36–39). |
+| `Args` | Dictionary\<string, string\> | `{}` | Ability-specific arguments. See below. |
 
-**Ability Classes**
+### Ability Classes
 
 | AbilityClass | Description | Args |
 |--------------|-------------|------|
-| `LuckBuff` | Passive luck bonus | `"Magnitude": "1"` |
-| `SpeedBuff` | Passive speed bonus | `"Magnitude": "1"` |
+| `Buff` | Applies a vanilla buff | `"BuffId": "luck"`, `"Magnitude": "1"` |
 | `Heal` | Restores player health | `"Amount": "10"` |
 | `Energy` | Restores player energy | `"Amount": "10"` |
 | `AnimalFriendship` | Boosts friendship with nearby farm animals | `"Range": "256"`, `"Amount": "15"` |
 | `NPCFriendship` | Boosts friendship with nearby NPCs | `"Range": "256"`, `"Amount": "15"` |
-| `FamiliarFriendship` | Boosts friendship with nearby familiars | `"Range": "256"`, `"Amount": "15"` |
-| `Melee` | Attacks nearby monsters | `"Range": "128"`, `"Damage": "5"` |
-| `Fisher` | Assists with fishing | *(none required)* |
-| `CropHarvest` | Harvests nearby mature crops | *(none required)* |
-| `AnimalHarvest` | Collects products from nearby farm animals | *(none required)* |
-| `ForageHarvest` | Collects nearby forage items | *(none required)* |
+| `FamiliarFriendship` | Boosts trust with nearby familiars | `"Range": "256"`, `"Amount": "15"` |
+| `Melee` | Attacks nearby monsters | `"Range": "128"`, `"Damage": "5"`, `"Knockback": "5"` |
+| `Fisher` | Assists with fishing | `"Range": "384"` |
+| `CropHarvest` | Harvests nearby mature crops | `"Range": "320"` |
+| `AnimalHarvest` | Collects products from nearby farm animals | `"Range": "320"` |
+| `ForageHarvest` | Collects nearby forage | `"Range": "320"` |
 | `Nop` | Does nothing. Useful as a placeholder. | *(none)* |
 
 ---
 
-### shops.json (Optional)
+## Registering Assets
 
-Adds a custom familiar shop. If omitted, your familiars are only sold through the Ouija Board (unless `ExcludeFromDefaultShop` is set).
+All textures and dialogue are registered as CP game assets. Add `Load` patches in `assets/data/textures.json`:
 
-```json
-[
-  {
-    "ShopId": "YourName.YourMod_ShopName",
-    "DisplayName": "Shop Display Name",
-    "ShopOwner": "NpcInternalName",
-    "ShopLocation": "Custom_LocationName",
-    "UseDefaultAccess": true,
-    "Stock": [
-      {
-        "FamiliarId": "YourName.YourMod_FamiliarName",
-        "Price": 2000,
-        "Condition": "PLAYER_FRIENDSHIP_POINTS Current NpcInternalName 500",
-        "RequiredMailFlag": "",
-        "Season": "",
-        "HiddenUntilUnlocked": false
-      }
-    ]
-  }
-]
-```
-
-#### FamiliarShopData Fields
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `ShopId` | string | *(required)* | Unique shop ID. |
-| `DisplayName` | string | `"Familiar Shop"` | Name shown in the shop menu. |
-| `ShopOwner` | string | `""` | Internal NPC name for the shop owner. Optional. |
-| `ShopLocation` | string | `""` | Location name for the shop. Optional. |
-| `UseDefaultAccess` | bool | `true` | If `true`, uses the framework's default shop access logic. |
-| `Stock` | FamiliarShopEntry[] | `[]` | Familiars sold in this shop. |
-
-#### FamiliarShopEntry Fields
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `FamiliarId` | string | *(required)* | The familiar species sold. |
-| `Price` | int | `5000` | Purchase price in gold. |
-| `Condition` | string | `""` | GSQ condition that must pass for this entry to appear. |
-| `RequiredMailFlag` | string | `""` | Mail flag that must be set for this entry to appear. |
-| `Season` | string | `""` | Restrict to a specific season (`"spring"`, `"summer"`, `"fall"`, `"winter"`). Empty = always available. |
-| `HiddenUntilUnlocked` | bool | `false` | If `true`, the entry is hidden in the shop until its condition is met. |
-
-`Condition` accepts standard [Game State Queries](https://stardewvalleywiki.com/Modding:Game_state_queries). Example from Vael's Familiars:
-```
-"PLAYER_FRIENDSHIP_POINTS Current CodysOasis.TotAG_CP_AetherGlade_Vael 500"
-```
-
----
-
-### Sprite Sheet Requirements
-
-**Animal sprites** (`assets/sprites/`)
-- PNG, transparent background
-- Standard Stardew scale: **32x32 px** per frame
-- Frames laid out horizontally per animation row
-- Row layout:
-
-| Row | Content |
-|-----|---------|
-| 1 | Walking Down |
-| 2 | Walking Right |
-| 3 | Walking Up |
-| 4 | Walking Left |
-| 5–9 | Reserved for future use (emotes, sleep animations, etc.) |
-| 10 | Proc animation — used when `ProcAnimation: true` |
-
-**Portraits** (`assets/portraits/`) — optional
-- PNG, transparent background
-- Standard Stardew portrait size: **64×64 px** per frame
-- Only shown if `Speaks: true` and `AnimalPortrait` is set
-
----
-
-### i18n
-
-Ability descriptions support i18n keys. Define them in your pack's `i18n/default.json`:
-
-```json
+```jsonc
 {
-  "MyFamiliar_Ability1_Description": "Collects nearby forage while following you."
+    "Format": "2.9.1",
+    "Changes": [
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Sprites/YourFamiliar", "FromFile": "assets/sprites/your_familiar.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Portraits/YourFamiliar", "FromFile": "assets/portraits/your_familiar.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Icons/YourFamiliar", "FromFile": "assets/icons/your_familiar_buff.png" },
+        { "Action": "Load", "Target": "Mods/{{ModId}}/Rooms/YourFamiliar", "FromFile": "assets/maps/rooms/your_familiar_room.tmx" }
+    ]
 }
 ```
 
-Reference in `familiars.json` as `"i18n:MyFamiliar_Ability1_Description"`.
+---
+
+## Sprite Sheet Requirements
+
+**Sprites** — 32×32px per frame, PNG with transparent background.
+
+| Row | Content |
+|-----|---------|
+| 1 | Walk Down |
+| 2 | Walk Right |
+| 3 | Walk Up |
+| 4 | Walk Left |
+| 5–9 | Reserved |
+| 10 | Proc animation (frames 36–39) |
+
+**Portraits** — 64×64px per frame, PNG with transparent background. Only shown if `Speaks: true`.
 
 ---
 
-## Example Packs
+## Dialogue
 
-- **[Vael's Familiars](https://www.nexusmods.com/games/stardewvalley/mods/46494)** — the official FAUNA content pack, part of the Tales of the Aether Glade series. Adds 11 familiars across multiple species, gated behind friendship with Vael.
+Dialogue files are registered as CP game assets using a `blank.json` seed + `EditData` pattern. This lets CP resolve `{{i18n:key}}` tokens in your dialogue strings.
+
+**`assets/dialogue/blank.json`:**
+```json
+{}
+```
+
+**`assets/data/dialogue/your_familiar.json`:**
+```jsonc
+{
+    "Format": "2.9.1",
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/Dialogue/YourFamiliar",
+            "FromFile": "assets/dialogue/blank.json"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Mods/{{ModId}}/Dialogue/YourFamiliar",
+            "Entries": {
+                "Chat_Trust0_Happy_0": "{{i18n:YourFamiliar_Chat_Trust0_Happy_0}}",
+                "Chat_Trust0_Happy_1": "{{i18n:YourFamiliar_Chat_Trust0_Happy_1}}",
+                "Chat_Trust0_Sad_0": "{{i18n:YourFamiliar_Chat_Trust0_Sad_0}}"
+            }
+        }
+    ]
+}
+```
+
+### Dialogue Key Format
+{Action}{TrustTier}{Mood}_{Index}
+
+| Segment | Values |
+|---------|--------|
+| `Action` | `Chat`, `Feed`, `Gift`, `Idle`, `IdleResponse` |
+| `TrustTier` | `Trust0`, `Trust2`, `Trust4`, `Trust6`, `Trust8`, `Trust10` |
+| `Mood` | `Happy`, `Sad` |
+| `Index` | `0`, `1`, `2`, ... (FAUNA picks randomly from available lines) |
 
 ---
 
-## Known Mods Using FAUNA
+## Shops (Optional)
 
-*Making a FAUNA content pack? Get in touch to be listed here — message **CodysOasis** on [Nexus Mods](https://www.nexusmods.com) or on Discord at **@codysoasis**.*
+Register a custom shop via the `Mods/CodysOasis.FAUNA/Shops` asset.
+
+**`assets/data/shops.json`:**
+```jsonc
+{
+    "Format": "2.9.1",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/CodysOasis.FAUNA/Shops",
+            "Entries": {
+                "{{ModId}}_YourShop": {
+                    "ShopId": "{{ModId}}_YourShop",
+                    "DisplayName": "{{i18n:shop.name}}",
+                    "ShopOwner": "NpcInternalName",
+                    "Stock": [
+                        {
+                            "FamiliarId": "{{ModId}}_YourFamiliar",
+                            "Price": 2000,
+                            "Condition": "PLAYER_FRIENDSHIP_POINTS Current NpcInternalName 500"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
+
+To open your shop via a map tile, add an `Action` tile property in Tiled on the `Buildings` layer object:
+FAUNA.OpenFamiliarShop {{ModId}}_YourShop
 
 ---
 
-## Compatibility
+## i18n
 
-- Compatible with Content Patcher mods
-- Compatible with SMAPI mods that don't override farm building logic
-- Familiars are a distinct entity class — mods targeting pets, trinkets, or NPCs specifically will not affect them
+All text fields that support `{{i18n:key}}` are resolved by CP before FAUNA reads them — this includes `DisplayName`, `Description`, and ability `Description` fields, as well as dialogue entries.
+
+**`i18n/default.json`:**
+```json
+{
+    "YourFamiliar.name": "Your Familiar",
+    "YourFamiliar.desc": "A mysterious creature.",
+    "YourFamiliar.ability.desc": "Collects nearby forage while following you.",
+    "YourFamiliar_Chat_Trust0_Happy_0": "Hello there."
+}
+```
 
 ---
 
-## License
+## Example Pack
 
-MIT — contributions welcome.
+The full source for **[TotAG] Vael's Familiars** is included in this repo under [`examplepack/`](../examplepack/%5BFAUNA%5DVaelsFamiliars) — 11 familiars across multiple species, with shops, dialogue, portraits, and i18n. Use it as a reference for any of the above.
 
 ---
 
-## Credits
+## Tips
 
-**FAUNA** by CodysOasis
+- Use `{{ModId}}` everywhere for FamiliarIds, asset paths, and shop IDs — it namespaces everything automatically and prevents conflicts with other packs.
+- Familiar IDs in player saves are the fully resolved key (e.g. `CodysOasis.TotAG_FAUNA_VaelsFamiliars_BlackCat`) — changing a FamiliarId after release will break existing saves for players who own that familiar.
+- `ProcTimer` is in real-time seconds, not game ticks. `AnimalFriendship` and similar social abilities are additionally capped at once per animal per day regardless of `ProcTimer`.
+- If your familiar has no abilities yet, pass `[]` for the whole `Abilities` list — the shop card will fall back to the familiar's `Description` instead of showing `???`.
+- Run `patch summary` in the SMAPI console to verify your patches are applying correctly

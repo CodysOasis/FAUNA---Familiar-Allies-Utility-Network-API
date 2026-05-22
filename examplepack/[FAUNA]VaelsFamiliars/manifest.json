@@ -1,21 +1,26 @@
 {
     "Name": "[TotAG] Vael's Familiars",
     "Author": "CodysOasis",
-    "Version": "0.1.0",
+    "Version": "1.1.0",
     "Description": "Adds Vael's Familiars as a content pack for FAUNA and The Aether Glade.",
     "UniqueID": "CodysOasis.TotAG_FAUNA_VaelsFamiliars",
     "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "Nexus:45156" ],
     "ContentPackFor": {
-        "UniqueID": "CodysOasis.TotAG_FAUNA"
+        "UniqueID": "Pathoschild.ContentPatcher"
     },
     "Dependencies": [
-    {
-      "UniqueID": "CodysOasis.TotAG_FAUNA",
-      "IsRequired": true
-    },
         {
-      "UniqueID": "CodysOasis.TotAG_CP_AetherGlade",
-      "IsRequired": true
-    }
-  ]
+            "UniqueID": "Pathoschild.ContentPatcher",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "CodysOasis.FAUNA",
+            "IsRequired": true
+        },
+        {
+            "UniqueID": "CodysOasis.TotAG_CP_AetherGlade",
+            "IsRequired": true
+        }
+    ]
 }
